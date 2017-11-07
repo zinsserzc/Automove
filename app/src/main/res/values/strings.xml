@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">Automove</string>
+    <string name="app_name">管理</string>
+    <string name="bt1">关机</string>
+    <string name="bt2">重启</string>
+    <string name="manager">管理</string>
+    <string name="jd">我的京东</string>
+    <string name="list1">第一行第一列</string>
+    <string name="desc">desc</string>
+    <string name="zy">作业</string>
+    <string name="zl">总览</string>
+    <string name="jk">监控</string>
+    <string name="gl">管理</string>
+    <string name="sz">设置</string>
 </resources>
