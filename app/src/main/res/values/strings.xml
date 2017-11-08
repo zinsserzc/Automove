@@ -11,4 +11,7 @@
     <string name="jk">监控</string>
     <string name="gl">管理</string>
     <string name="sz">设置</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
