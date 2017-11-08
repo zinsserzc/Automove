@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dip"
+    android:background="@color/blue">
+
+
+    <RelativeLayout
+        android:id="@+id/icon_back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+
+        android:background="@drawable/bg_button"
+        >
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_marginLeft="10dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/icon_back"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="标题"
+        android:textSize="17sp"
+        android:textColor="#fff" />
+
+    <RelativeLayout
+        android:id="@+id/icon_more"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_button"
+        android:layout_alignParentRight="true" >
+        <ImageView
+            android:id="@+id/img_more"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            />
+
+        <TextView
+            android:id="@+id/text_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/img_more"
+            android:paddingRight="10dp"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:background="@color/blue"
+            android:singleLine="true"/>
+
+    </RelativeLayout>
+</RelativeLayout>
