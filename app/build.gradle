@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.0'
     compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
 }

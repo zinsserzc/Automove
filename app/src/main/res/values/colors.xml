@@ -8,4 +8,9 @@
     <color name="button_focus">@color/colorPrimaryDark</color>
     <color name="button_normal">@color/blue</color>
     <color name="blue">#014ea0</color>
+
+
+    <!--总览-->
+    <color name="divide_line">#0b7179</color>
+    <color name="sky_blue">#02bac4</color>
 </resources>

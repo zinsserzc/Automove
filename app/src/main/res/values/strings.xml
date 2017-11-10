@@ -12,6 +12,46 @@
     <string name="gl">管理</string>
     <string name="sz">设置</string>
 
+    <!-- 集群总览 -->
+    <string name="turn_on_time">开机时间：</string>
+    <string name="running_time">运行时间：</string>
+    <string name="day">天</string>
+    <string name="hour">小时</string>
+    <string name="minute">分</string>
+    <string name="disk">磁盘</string>
+    <string name="memory">内存</string>
+    <string name="temperature">温蒂</string>
+    <string name="fault">故障</string>
+    <string name="message">消息</string>
+    <string name="host_name">主机名：</string>
+    <string name="ip_address">IP地址：</string>
+    <string name="mac_address">MAC地址：</string>
+    <string name="host">主机：   </string>
+    <string name="node">节点：   </string>
+    <string name="GPU">GPU：   </string>
+    <string name="switchboard">交换机： </string>
+    <string name="UPS">UPS： </string>
+    <string name="storage">存储： </string>
+    <string name="work">作业：</string>
+    <string name="running">运行：</string>
+    <string name="waiting">等待：</string>
+    <string name="GPU_type">GPU型号：</string>
+    <string name="dominant_frequency">主频：</string>
+    <string name="core_count">核数：</string>
+    <string name="memory_type">内存型号：</string>
+    <string name="size">大小：</string>
+    <string name="hard_type">硬盘型号：</string>
+    <string name="Mount">Mount</string>
+    <string name="Used">Used</string>
+    <string name="Size">Size</string>
+    <string name="usage_percent">Usage%</string>
+    <string name="cpu_use">CPU利用率：</string>
+    <string name="ram_use">RAM利用率：</string>
+
+
+
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
