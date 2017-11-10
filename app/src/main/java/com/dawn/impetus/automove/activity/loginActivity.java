@@ -106,8 +106,10 @@ public class LoginActivity extends AppCompatActivity {
             public  void  onClick(View v)
             {
                 //登录中ui
-
-
+                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                startActivity(intent);
+                finish();
+/**
                 if(userString==null||userString.equals(""))
                 {
                     Toast.makeText(LoginActivity.this,"请输入账号",Toast.LENGTH_SHORT).show();
@@ -126,10 +128,9 @@ public class LoginActivity extends AppCompatActivity {
                     // 登录失败toast
                     //
                     // }
-                    Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
-                    startActivity(intent);
-                    finish();
+
                 }
+ **/
 
             }
 

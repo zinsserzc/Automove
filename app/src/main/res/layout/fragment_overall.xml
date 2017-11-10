@@ -314,7 +314,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="left"
+                    android:gravity="center_vertical"
                     android:paddingLeft="5dip"
                     android:text="28"
                     android:textColor="@color/blue"/>
@@ -435,7 +435,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
-                                    android:text="null"
+                                    android:text="0"
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
                             <LinearLayout
@@ -452,7 +452,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
-                                    android:text="null"
+                                    android:text="0"
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
                             <LinearLayout
@@ -470,7 +470,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
-                                    android:text="null"
+                                    android:text="0"
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
                         </LinearLayout>
@@ -492,7 +492,7 @@
                             android:layout_height="match_parent"
                             android:gravity="left"
                             android:paddingLeft="5dip"
-                            android:text="null"
+                            android:text="0"
                             android:textColor="@color/blue"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -533,7 +533,7 @@
                                 android:layout_height="match_parent"
                                 android:gravity="left"
                                 android:paddingLeft="5dip"
-                                android:text="null"
+                                android:text="0"
                                 android:textColor="@color/blue"/>
                         </LinearLayout>
 
@@ -553,7 +553,7 @@
                                 android:layout_height="match_parent"
                                 android:gravity="left"
                                 android:paddingLeft="5dip"
-                                android:text="null"
+                                android:text="0"
                                 android:textColor="@color/blue"/>
                         </LinearLayout>
 
@@ -600,29 +600,29 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
-                                    android:text="null"
-                                    android:textColor="@color/blue"/>
-                            </LinearLayout>
-
-                            <!--等待-->
-                            <LinearLayout
-                                android:layout_width="0dip"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:orientation="horizontal">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:paddingLeft="5dip"
-                                    android:text="@string/waiting"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:gravity="left"
-                                    android:paddingLeft="5dip"
                                     android:text="0"
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
+
+                        </LinearLayout>
+                        <!--等待-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dip"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:paddingLeft="5dip"
+                                android:text="@string/waiting"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="left"
+                                android:paddingLeft="5dip"
+                                android:text="0"
+                                android:textColor="@color/blue"/>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
