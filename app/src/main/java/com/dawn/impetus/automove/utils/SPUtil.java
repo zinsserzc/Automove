@@ -25,8 +25,8 @@ public class SPUtil {
         } else if (obj instanceof Long) {
             editor.putLong(key, (Long) obj);
         } else {
-            editor.putString(key, (String) obj);
-        }
+        editor.putString(key, (String) obj);
+    }
         editor.commit();
     }
 

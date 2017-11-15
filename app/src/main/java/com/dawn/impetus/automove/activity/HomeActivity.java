@@ -4,6 +4,7 @@ import android.os.Process;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TabHost;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import com.dawn.impetus.automove.fragments.OverallFragment;
 import com.dawn.impetus.automove.fragments.SettingFragment;
 import com.dawn.impetus.automove.fragments.WorkFragment;
 import com.dawn.impetus.automove.ui.TabIndicatorView;
+import com.dawn.impetus.automove.utils.SSHUtil;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -33,6 +35,14 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        SSHUtil sshUtil= SSHUtil.getInstance();
+        try {
+            sshUtil.execCmd("df -h");
+        }catch (Exception e)
+        {
+            Log.e("error ",e.getMessage());
+        }
+
         initView();
         init();
     }
