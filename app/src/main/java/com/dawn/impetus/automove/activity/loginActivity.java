@@ -54,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = (Button) findViewById(R.id.login_btnLogin);
         userEdit = (EditText) findViewById(R.id.login_edtId);
         pswEdit = (EditText) findViewById(R.id.login_edtPwd);
-
     }
 
     /**
@@ -122,6 +121,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (isValid()) {
                     saveUser();
+                    loginBtn.setEnabled(false);
                     login();
                 }
             }
@@ -153,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                         break;
                     case 0:
                         Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
+                        loginBtn.setEnabled(true);
                         break;
                 }
             }

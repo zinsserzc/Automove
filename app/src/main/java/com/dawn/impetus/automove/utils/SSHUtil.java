@@ -52,7 +52,7 @@ public class SSHUtil {
     /**
      * 设置用户名密码
      */
-    private void getUser() {
+    private synchronized void getUser() {
 
         //取出用户名和密码并设置,生命周期是全局的
         Context context = ContextApplication.getAppContext();
@@ -66,7 +66,7 @@ public class SSHUtil {
      *
      * @throws JSchException
      */
-    public void connect() throws JSchException {
+    public synchronized void  connect() throws JSchException {
         getUser();
         if (session == null || !session.isConnected()) {
             session = jsch.getSession(userName, host, port);
@@ -83,7 +83,7 @@ public class SSHUtil {
     /**
      * 关闭连接
      */
-    public void destroy() throws Exception {
+    public synchronized void destroy() throws Exception {
         if (session != null && session.isConnected()) {
             session.disconnect();
             Log.i(TAG, "destroy connect");
@@ -93,7 +93,7 @@ public class SSHUtil {
     /**
      * 执行一条命令
      */
-    public void execCmd(String command) throws Exception {
+    public synchronized void execCmd(String command) throws Exception {
 
         connect();
 
