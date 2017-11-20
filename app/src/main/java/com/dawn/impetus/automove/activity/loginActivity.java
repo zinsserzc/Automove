@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.dawn.impetus.automove.R;
 import com.dawn.impetus.automove.utils.SPUtil;
 import com.dawn.impetus.automove.utils.SSHUtil;
+import com.dawn.impetus.automove.utils.ServerUtil;
 
 /**
  * 登录activity
@@ -30,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginBtn;
     private String userName, passWord;
     private Handler loginHandler;
+    private ServerUtil svUtil;
 
 
     @Override
@@ -166,14 +168,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Message msg = new Message();
-                SSHUtil sshUtil = SSHUtil.getInstance();
-                try {
-                    sshUtil.connect();
+                if(svUtil.connect())
+                {
                     msg.what = 1;
-                } catch (Exception e) {
-                    Log.e(TAG,e.getMessage());
+                }else {
                     msg.what = 0;
-
                 }
                 loginHandler.sendMessage(msg);
 
