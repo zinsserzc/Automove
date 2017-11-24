@@ -10,20 +10,41 @@
         android:theme="@style/AppTheme"
         android:name=".utils.ContextApplication">
         <activity android:name=".activity.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity"/>
 
 
         <activity
             android:name=".activity.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <service android:name="com.baidu.speech.VoiceRecognitionService" android:exported="false" />
+
+
+        <!--百度语音sdk appid,appkey-->
+        <meta-data android:name="com.baidu.speech.APP_ID"
+            android:value="10429813" />
+        <meta-data
+            android:name="com.baidu.speech.API_KEY"
+            android:value="k28jAsWaoG56QwyDELrAVcOU" />
+        <meta-data
+            android:name="com.baidu.speech.SECRET_KEY"
+            android:value="LnnoYobeP5mx7LWBktDxnCBaMGk1GBwv " />
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
+    <!--百度语音sdk-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>
