@@ -19,6 +19,7 @@ import com.dawn.impetus.automove.utils.SPUtil;
 import com.dawn.impetus.automove.utils.SSHUtil;
 import com.dawn.impetus.automove.utils.ServerUtil;
 
+
 /**
  * 登录activity
  */
@@ -32,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private String userName, passWord;
     private Handler loginHandler;
     private ServerUtil svUtil;
+
 
 
     @Override
@@ -56,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = (Button) findViewById(R.id.login_btnLogin);
         userEdit = (EditText) findViewById(R.id.login_edtId);
         pswEdit = (EditText) findViewById(R.id.login_edtPwd);
+
     }
 
     /**
@@ -147,14 +150,14 @@ public class LoginActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 1:
-                        Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
 
                         break;
                     case 0:
-                        Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
                         loginBtn.setEnabled(true);
                         break;
                 }
@@ -168,18 +171,26 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Message msg = new Message();
-                if(svUtil.connect())
-                {
+                if (svUtil.connect()) {
                     msg.what = 1;
-                }else {
+                } else {
                     msg.what = 0;
+                    SSHUtil sshUtil = SSHUtil.getInstance();
+                    try {
+                        sshUtil.connect();
+                        msg.what = 1;
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage());
+                        msg.what = 0;
+
+                    }
+                    loginHandler.sendMessage(msg);
+
                 }
-                loginHandler.sendMessage(msg);
 
             }
 
         }.start();
-
     }
 
     /**

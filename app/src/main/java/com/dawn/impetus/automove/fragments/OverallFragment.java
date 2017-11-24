@@ -1,26 +1,49 @@
 package com.dawn.impetus.automove.fragments;
 
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.baidu.speech.EventListener;
+import com.baidu.speech.EventManager;
+import com.baidu.speech.EventManagerFactory;
+import com.baidu.speech.asr.SpeechConstant;
 import com.dawn.impetus.automove.R;
+import com.dawn.impetus.automove.utils.VoiceUtil;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ObjectPool;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 总览
  */
-public class OverallFragment extends Fragment {
+public class OverallFragment extends Fragment implements View.OnClickListener{
 
+    private ImageView iconSearch;
+
+
+    //Baidu语音
+    private VoiceUtil voice;
+    private boolean isStart;
 
     //图表
     private PieChart chartCPU;
@@ -38,7 +61,13 @@ public class OverallFragment extends Fragment {
     }
 
     private void init() {
+        iconSearch.setOnClickListener(this);
+
+        //初始百度语音
+        voice = new VoiceUtil(this.getActivity());
+
         drawChart();
+
     }
 
     private void drawChart() {
@@ -94,6 +123,32 @@ public class OverallFragment extends Fragment {
     private void initView(View view) {
         chartCPU =  (PieChart) view.findViewById(R.id.piechart_cpu);
         charRAM = (PieChart) view.findViewById(R.id.piechart_ram);
+
+        iconSearch = (ImageView) view.findViewById(R.id.icon_search);
     }
 
+    public void onClick(View v){
+
+        switch (v.getId()){
+            case R.id.icon_search:
+                isStart = !isStart;
+                if(isStart){
+                    voice.start();
+                }else {
+                    voice.stop();
+                }
+                break;
+            default:
+                break;
+        }
+
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        voice.destroy();
+
+    }
 }
