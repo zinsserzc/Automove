@@ -11,6 +11,7 @@
         android:background="@color/blue"
         android:paddingRight="10dip">
         <ImageView
+            android:id="@+id/icon_search"
             android:layout_width="25dip"
             android:layout_height="25dip"
             android:layout_alignParentRight="true"
