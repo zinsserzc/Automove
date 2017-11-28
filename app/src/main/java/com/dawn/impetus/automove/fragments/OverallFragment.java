@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.speech.EventListener;
@@ -19,6 +20,8 @@ import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
 import com.dawn.impetus.automove.R;
+import com.dawn.impetus.automove.entities.OverallData;
+import com.dawn.impetus.automove.utils.ServerUtil;
 import com.dawn.impetus.automove.utils.VoiceUtil;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -28,6 +31,7 @@ import com.github.mikephil.charting.utils.ObjectPool;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -40,6 +44,8 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
 
     private ImageView iconSearch;
 
+    //数据封装对象
+    private OverallData datas = OverallData.getInstance();
 
     //Baidu语音
     private VoiceUtil voice;
@@ -48,6 +54,19 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
     //图表
     private PieChart chartCPU;
     private PieChart charRAM;
+
+    //开机时间
+    private TextView startTimeTv;
+    //运行时间
+    private TextView runningTimeDayTv;
+    private TextView runningTimeHourTv;
+    private TextView runningTimeMinuteTv;
+    //主机名
+    private TextView hostNameTv;
+    //ip
+    private TextView ipTv;
+    //mac
+    private TextView macTv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,12 +81,28 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
 
     private void init() {
         iconSearch.setOnClickListener(this);
+        setText();
 
         //初始百度语音
         voice = new VoiceUtil(this.getActivity());
 
         drawChart();
 
+    }
+
+    private void setText(){
+        getData();
+        hostNameTv.setText(datas.getHoetName());
+        startTimeTv.setText(datas.getStartTime());
+        ipTv.setText(datas.getIp());
+        macTv.setText(datas.getMac());
+    }
+
+    private void getData(){
+        datas.setHoetName(ServerUtil.getHsotName());
+        datas.setIp(ServerUtil.getIP());
+        datas.setMac(ServerUtil.getMAC());
+        datas.setStartTime(ServerUtil.getOpTime());
     }
 
     private void drawChart() {
@@ -125,6 +160,12 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
         charRAM = (PieChart) view.findViewById(R.id.piechart_ram);
 
         iconSearch = (ImageView) view.findViewById(R.id.icon_search);
+
+        //界面数据textview
+        startTimeTv = (TextView) view.findViewById(R.id.tv_start_time);
+        hostNameTv = (TextView) view.findViewById(R.id.tv_host_name);
+        ipTv = (TextView) view.findViewById(R.id.tv_ip);
+        macTv = (TextView) view.findViewById(R.id.tv_mac);
     }
 
     public void onClick(View v){
