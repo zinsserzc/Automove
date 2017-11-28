@@ -16,17 +16,18 @@ import com.dawn.impetus.automove.fragments.SettingFragment;
 import com.dawn.impetus.automove.fragments.WorkFragment;
 import com.dawn.impetus.automove.ui.TabIndicatorView;
 import com.dawn.impetus.automove.utils.SSHUtil;
+import com.dawn.impetus.automove.utils.ServerUtil;
 
 public class HomeActivity extends AppCompatActivity {
 
     //定义FragmentTabHost对象
     private FragmentTabHost mTabHost;
     //定义数组来存放Fragment界面
-    private Class fragmentArray[] = {WorkFragment.class,MonitorFragment.class,OverallFragment.class,ManageFragment.class,SettingFragment.class};
+    private Class fragmentArray[] = {WorkFragment.class, MonitorFragment.class, OverallFragment.class, ManageFragment.class, SettingFragment.class};
     //定义数组来存放按钮图片
-    private int mImageViewArrayNomal[] = {R.drawable.zuoye,R.drawable.jiankong,R.drawable.home,R.drawable.guanli,R.drawable.shezhi};
+    private int mImageViewArrayNomal[] = {R.drawable.zuoye, R.drawable.jiankong, R.drawable.home, R.drawable.guanli, R.drawable.shezhi};
     //Tab选项卡的文字
-    private String mTextviewArray[] = {"作业", "监控", "集群总览","管理","设置"};
+    private String mTextviewArray[] = {"作业", "监控", "集群总览", "管理", "设置"};
     private TabIndicatorView[] mTabIndicatorView = new TabIndicatorView[5];
 
     private boolean isFirstPress = false;
@@ -35,12 +36,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        SSHUtil sshUtil= SSHUtil.getInstance();
+        SSHUtil sshUtil = SSHUtil.getInstance();
         try {
             sshUtil.execCmd("df -h");
-        }catch (Exception e)
-        {
-            Log.e("error ",e.getMessage());
+        } catch (Exception e) {
+            Log.e("error ", e.getMessage());
         }
 
         initView();
@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //得到fragment的个数
         int count = fragmentArray.length;
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             mTabIndicatorView[i] = new TabIndicatorView(this);
             mTabIndicatorView[i].setDesc(mTextviewArray[i]);
             mTabIndicatorView[i].setIconId(mImageViewArrayNomal[i], mImageViewArrayNomal[i]);
@@ -86,8 +86,8 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(!isFirstPress) {
-            Toast.makeText(this,"再按一次退出",Toast.LENGTH_SHORT).show();
+        if (!isFirstPress) {
+            Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
             isFirstPress = true;
         } else {
             //Process.killProcess(Process.myPid());

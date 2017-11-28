@@ -24,7 +24,7 @@ public class SSHUtil {
     public static String TAG = SSHUtil.class.getName();
 
     private String charset = "UTF-8"; // 设置编码格式
-    private String userName; // 用户名
+    private String username; // 用户名
     private String password; // 登录密码
     private String host = "116.236.169.100"; // 主机IP
     private int port = 22; //端口
@@ -56,9 +56,9 @@ public class SSHUtil {
 
         //取出用户名和密码并设置,生命周期是全局的
         Context context = ContextApplication.getAppContext();
-        userName = SPUtil.get(context, "userName", "").toString();
+        username = SPUtil.get(context, "userName", "").toString();
         password = SPUtil.get(context, "passWord", "").toString();
-        Log.i(TAG, "user is" + userName + " psw is" + password);
+        Log.i(TAG, "user is" + username + " psw is" + password);
     }
 
     /**
@@ -69,7 +69,7 @@ public class SSHUtil {
     public synchronized void  connect() throws JSchException {
         getUser();
         if (session == null || !session.isConnected()) {
-            session = jsch.getSession(userName, host, port);
+            session = jsch.getSession(username, host, port);
             session.setPassword(password);
             java.util.Properties config = new java.util.Properties();
             config.put("StrictHostKeyChecking", "no");
@@ -83,7 +83,7 @@ public class SSHUtil {
     /**
      * 关闭连接
      */
-    public synchronized void destroy() throws Exception {
+    public synchronized void disconnect() throws Exception {
         if (session != null && session.isConnected()) {
             session.disconnect();
             Log.i(TAG, "destroy connect");
@@ -93,7 +93,7 @@ public class SSHUtil {
     /**
      * 执行一条命令
      */
-    public synchronized void execCmd(String command) throws Exception {
+    public synchronized String execCmd(String command) throws Exception {
 
         connect();
 
@@ -108,11 +108,18 @@ public class SSHUtil {
         InputStream in = channel.getInputStream();
         reader = new BufferedReader(new InputStreamReader(in,
                 Charset.forName(charset)));
-        String buf = null;
-        while ((buf = reader.readLine()) != null) {
-            Log.w("info", buf);
+        StringBuffer buf = new StringBuffer();
+        String line;
+        line=reader.readLine();
+        while (line!=null)
+        {
+            buf.append(line);
+            buf.append("\n");
+            line=reader.readLine();
         }
         channel.disconnect();
+        in.close();
+        return buf.toString();
     }
 
 }

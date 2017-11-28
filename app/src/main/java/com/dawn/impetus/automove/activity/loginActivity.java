@@ -124,6 +124,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (isValid()) {
                     saveUser();
                     loginBtn.setEnabled(false);
+                    loginBtn.setText("登录中...");
+                    userEdit.setEnabled(false);
+                    pswEdit.setEnabled(false);
                     login();
                 }
             }
@@ -151,11 +154,13 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
-
                         break;
                     case 0:
                         Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
                         loginBtn.setEnabled(true);
+                        loginBtn.setText("登录");
+                        userEdit.setEnabled(true);
+                        pswEdit.setEnabled(true);
                         break;
                 }
             }
