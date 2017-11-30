@@ -22,6 +22,7 @@ import com.baidu.speech.asr.SpeechConstant;
 import com.dawn.impetus.automove.R;
 import com.dawn.impetus.automove.entities.OverallData;
 import com.dawn.impetus.automove.utils.ServerUtil;
+import com.dawn.impetus.automove.utils.StringUtil;
 import com.dawn.impetus.automove.utils.VoiceUtil;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -36,11 +37,14 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TimerTask;
 
 /**
  * 总览
  */
 public class OverallFragment extends Fragment implements View.OnClickListener{
+
+    private final long REFRESHTIME = 10*1000;
 
     private ImageView iconSearch;
 
@@ -67,6 +71,65 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
     private TextView ipTv;
     //mac
     private TextView macTv;
+    //主机
+    private TextView hostTv;
+    //节点
+    private TextView nodeTv1;
+    private TextView nodeTv2;
+    private TextView nodeTv3;
+    //GPU
+    private TextView GPUTv1;
+    private TextView GPUTv2;
+    private TextView GPUTv3;
+    //交换机
+    private TextView changerTv;
+    //GPU型号
+    private TextView GPUTypeTv;
+    //主频
+    private TextView dominateFrequencyTv;
+    //核数
+    private TextView coreCountTv;
+    //内存型号
+    private TextView memoryTypeTv;
+    //大小
+    private TextView sizeTv;
+    //硬盘型号
+    private TextView hardTypeTv;
+
+    //mount
+    private TextView mount1Tv;
+    private TextView mount2Tv;
+    private TextView mount3Tv;
+    //size
+    private TextView size1Tv;
+    private TextView size2Tv;
+    private TextView size3Tv;
+    //used
+    private TextView used1Tv;
+    private TextView used2Tv;
+    private TextView used3Tv;
+    //百分比
+    private TextView per1Tv;
+    private TextView per2Tv;
+    private TextView per3Tv;
+    //百分比图片
+    private TextView per1Img1;
+    private TextView per1Img2;
+    private TextView per1Img3;
+    private TextView per1Img4;
+    private TextView per1Img5;
+    private TextView per2Img1;
+    private TextView per2Img2;
+    private TextView per2Img3;
+    private TextView per2Img4;
+    private TextView per2Img5;
+    private TextView per3Img1;
+    private TextView per3Img2;
+    private TextView per3Img3;
+    private TextView per3Img4;
+    private TextView per3Img5;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,34 +145,220 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
     private void init() {
         iconSearch.setOnClickListener(this);
         setText();
-
         //初始百度语音
         voice = new VoiceUtil(this.getActivity());
-
         drawChart();
 
+        //startUpdate();
+
+    }
+
+    private void startUpdate(){
+        //多线程刷新数据
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+
+                    try {
+                        Thread.currentThread().sleep(REFRESHTIME);
+                    } catch (Exception e) {
+                        Toast.makeText(OverallFragment.this.getActivity(),"网络连接中断，请刷新界面！",Toast.LENGTH_LONG).show();
+                    }
+                    setText();
+                    showPercentageImage();
+                    drawChart();
+                }
+            }
+        };
+        Thread thread = new Thread(r);
+        thread.run();
     }
 
     private void setText(){
         getData();
-        hostNameTv.setText(datas.getHoetName());
+        setData();
+
+    }
+
+    private void setData(){
+        hostNameTv.setText(datas.getHostName());
         startTimeTv.setText(datas.getStartTime());
         ipTv.setText(datas.getIp());
         macTv.setText(datas.getMac());
+        runningTimeDayTv.setText(datas.getRunningTime()[0]);
+        runningTimeDayTv.setText(datas.getRunningTime()[1]);
+        runningTimeDayTv.setText(datas.getRunningTime()[2]);
+        hostTv.setText(datas.getHost());
+        nodeTv1.setText(datas.getNode1());
+        nodeTv2.setText(datas.getNode2());
+        nodeTv3.setText(datas.getNode3());
+        changerTv.setText(datas.getChanger());
+        GPUTypeTv.setText(datas.getCPUNmae());
+        dominateFrequencyTv.setText(datas.getDominateFrequency());
+        coreCountTv.setText(datas.getCoreCount());
+        memoryTypeTv.setText(datas.getMemoryType());
+        hardTypeTv.setText(datas.getHardTypeTv());
+        sizeTv.setText(datas.getSize());
+        mount1Tv.setText(datas.getMount1());
+        mount2Tv.setText(datas.getMount2());
+        mount3Tv.setText(datas.getMount3());
+        size1Tv.setText(datas.getSize1());
+        size2Tv.setText(datas.getSize2());
+        size3Tv.setText(datas.getSize3());
+        used1Tv.setText(datas.getUsed1());
+        used2Tv.setText(datas.getUsed2());
+        used3Tv.setText(datas.getUsed3());
+        per1Tv.setText(datas.getUsePer1());
+        per2Tv.setText(datas.getUsePer2());
+        per3Tv.setText(datas.getUsePer3());
+        showPercentageImage();
+    }
+
+    private void showPercentageImage(){
+        String per1 = datas.getUsePer1();
+        String per2 = datas.getUsePer2();
+        String per3 = datas.getUsePer3();
+        float f1 = StringUtil.percentageToFloat(per1);
+        float f2 = StringUtil.percentageToFloat(per2);
+        float f3 = StringUtil.percentageToFloat(per3);
+        if(f1 >= 1){
+            per1Img1.setVisibility(View.VISIBLE);
+            per1Img2.setVisibility(View.VISIBLE);
+            per1Img3.setVisibility(View.VISIBLE);
+            per1Img4.setVisibility(View.VISIBLE);
+            per1Img5.setVisibility(View.VISIBLE);
+        }else if(f1 >= 0.8){
+            per1Img1.setVisibility(View.VISIBLE);
+            per1Img2.setVisibility(View.VISIBLE);
+            per1Img3.setVisibility(View.VISIBLE);
+            per1Img4.setVisibility(View.VISIBLE);
+            per1Img5.setVisibility(View.VISIBLE);
+        }else if(f1 >= 0.6){
+            per1Img1.setVisibility(View.VISIBLE);
+            per1Img2.setVisibility(View.VISIBLE);
+            per1Img3.setVisibility(View.VISIBLE);
+            per1Img5.setVisibility(View.INVISIBLE);
+            per1Img4.setVisibility(View.VISIBLE);
+        }else if(f1 >= 0.4){
+            per1Img1.setVisibility(View.VISIBLE);
+            per1Img2.setVisibility(View.VISIBLE);
+            per1Img5.setVisibility(View.INVISIBLE);
+            per1Img4.setVisibility(View.INVISIBLE);
+            per1Img3.setVisibility(View.VISIBLE);
+        }else if(f1 >= 0.2){
+            per1Img1.setVisibility(View.VISIBLE);
+            per1Img5.setVisibility(View.INVISIBLE);
+            per1Img4.setVisibility(View.INVISIBLE);
+            per1Img3.setVisibility(View.INVISIBLE);
+            per1Img2.setVisibility(View.VISIBLE);
+        }else{
+            per1Img5.setVisibility(View.INVISIBLE);
+            per1Img4.setVisibility(View.INVISIBLE);
+            per1Img3.setVisibility(View.INVISIBLE);
+            per1Img2.setVisibility(View.INVISIBLE);
+            per1Img1.setVisibility(View.VISIBLE);
+        }
+        if(f2 >= 1){
+            per2Img1.setVisibility(View.VISIBLE);
+            per2Img2.setVisibility(View.VISIBLE);
+            per2Img3.setVisibility(View.VISIBLE);
+            per2Img4.setVisibility(View.VISIBLE);
+            per2Img5.setVisibility(View.VISIBLE);
+        }else if(f2 >= 0.8){
+            per2Img1.setVisibility(View.VISIBLE);
+            per2Img2.setVisibility(View.VISIBLE);
+            per2Img3.setVisibility(View.VISIBLE);
+            per2Img4.setVisibility(View.VISIBLE);
+            per2Img5.setVisibility(View.VISIBLE);
+        }else if(f2 >= 0.6){
+            per2Img1.setVisibility(View.VISIBLE);
+            per2Img2.setVisibility(View.VISIBLE);
+            per2Img3.setVisibility(View.VISIBLE);
+            per2Img5.setVisibility(View.INVISIBLE);
+            per2Img4.setVisibility(View.VISIBLE);
+        }else if(f2 >= 0.4){
+            per2Img1.setVisibility(View.VISIBLE);
+            per2Img2.setVisibility(View.VISIBLE);
+            per2Img5.setVisibility(View.INVISIBLE);
+            per2Img4.setVisibility(View.INVISIBLE);
+            per2Img3.setVisibility(View.VISIBLE);
+        }else if(f2 >= 0.2){
+            per2Img1.setVisibility(View.VISIBLE);
+            per2Img5.setVisibility(View.INVISIBLE);
+            per2Img4.setVisibility(View.INVISIBLE);
+            per2Img3.setVisibility(View.INVISIBLE);
+            per2Img2.setVisibility(View.VISIBLE);
+        }else{
+            per2Img5.setVisibility(View.INVISIBLE);
+            per2Img4.setVisibility(View.INVISIBLE);
+            per2Img3.setVisibility(View.INVISIBLE);
+            per2Img2.setVisibility(View.INVISIBLE);
+            per2Img1.setVisibility(View.VISIBLE);
+        }
+        if(f3 >= 1){
+            per3Img1.setVisibility(View.VISIBLE);
+            per3Img2.setVisibility(View.VISIBLE);
+            per3Img3.setVisibility(View.VISIBLE);
+            per3Img4.setVisibility(View.VISIBLE);
+            per3Img5.setVisibility(View.VISIBLE);
+        }else if(f3 >= 0.8){
+            per3Img1.setVisibility(View.VISIBLE);
+            per3Img2.setVisibility(View.VISIBLE);
+            per3Img3.setVisibility(View.VISIBLE);
+            per3Img4.setVisibility(View.VISIBLE);
+            per3Img5.setVisibility(View.VISIBLE);
+        }else if(f3 >= 0.6){
+            per3Img1.setVisibility(View.VISIBLE);
+            per3Img2.setVisibility(View.VISIBLE);
+            per3Img3.setVisibility(View.VISIBLE);
+            per3Img5.setVisibility(View.INVISIBLE);
+            per3Img4.setVisibility(View.VISIBLE);
+        }else if(f3 >= 0.4){
+            per3Img1.setVisibility(View.VISIBLE);
+            per3Img2.setVisibility(View.VISIBLE);
+            per3Img5.setVisibility(View.INVISIBLE);
+            per3Img4.setVisibility(View.INVISIBLE);
+            per3Img3.setVisibility(View.VISIBLE);
+        }else if(f3 >= 0.2){
+            per3Img1.setVisibility(View.VISIBLE);
+            per3Img5.setVisibility(View.INVISIBLE);
+            per3Img4.setVisibility(View.INVISIBLE);
+            per3Img3.setVisibility(View.INVISIBLE);
+            per3Img2.setVisibility(View.VISIBLE);
+        }else{
+            per3Img5.setVisibility(View.INVISIBLE);
+            per3Img4.setVisibility(View.INVISIBLE);
+            per3Img3.setVisibility(View.INVISIBLE);
+            per3Img2.setVisibility(View.INVISIBLE);
+            per3Img1.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getData(){
-        datas.setHoetName(ServerUtil.getHsotName());
+        datas.setHostName(ServerUtil.getHsotName());
         datas.setIp(ServerUtil.getIP());
         datas.setMac(ServerUtil.getMAC());
         datas.setStartTime(ServerUtil.getOpTime());
+        datas.setHost(ServerUtil.getNodeNum());
+        datas.setRunningTime(ServerUtil.getRunTime());
+        datas.setNodes(ServerUtil.getNodeStateNum());
+        datas.setDominateFrequency(ServerUtil.getCPUHZ());
+        datas.setCoreCount(ServerUtil.getCPUCores());
+        datas.setSize(ServerUtil.getMemSize());
+        datas.setHost(ServerUtil.getNodeNum());
+        datas.setCPUNmae(ServerUtil.getCPUName());
+        datas.setHardData(ServerUtil.getDiskInfo());
+        datas.setCPUUsage(ServerUtil.getCPUUsage());
+        datas.setRAMUsage(ServerUtil.getMemUsage());
     }
 
     private void drawChart() {
         //pieChart
         ArrayList<PieEntry> entriesCPU = new ArrayList<>();
-        entriesCPU.add(new PieEntry(18.5f,"Green"));
-        entriesCPU.add(new PieEntry(81.5f,"Red"));
+        float cpuFloat = StringUtil.percentageToFloat(datas.getCPUUsage());
+        entriesCPU.add(new PieEntry(cpuFloat,"Green"));
+        entriesCPU.add(new PieEntry(1-cpuFloat,"Red"));
 
         ArrayList<Integer> colorsCPU = new ArrayList<>();
         colorsCPU.add(Color.BLUE);
@@ -126,14 +375,17 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
         chartCPU.setDrawEntryLabels(false);
         chartCPU.setDrawHoleEnabled(true);
         chartCPU.setDrawCenterText(true);
-        chartCPU.setCenterText("18.5%");
+        chartCPU.setCenterText(datas.getCPUUsage());
         chartCPU.setCenterTextColor(Color.BLACK);
+        chartCPU.setHoleRadius(60f);
+        chartCPU.setCenterTextSize(6f);
         chartCPU.invalidate();
 
         //ramChart
         ArrayList<PieEntry> entriesRAM = new ArrayList<>();
-        entriesRAM.add(new PieEntry(60f,"Green"));
-        entriesRAM.add(new PieEntry(40f,"Red"));
+        float RAMFloat = StringUtil.percentageToFloat(datas.getRAMUsage());
+        entriesRAM.add(new PieEntry(RAMFloat,"Green"));
+        entriesRAM.add(new PieEntry(1-RAMFloat,"Red"));
 
         ArrayList<Integer> colorsRAM = new ArrayList<>();
         colorsRAM.add(Color.BLUE);
@@ -150,8 +402,10 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
         charRAM.setDrawEntryLabels(false);
         charRAM.setDrawHoleEnabled(true);
         charRAM.setDrawCenterText(true);
-        charRAM.setCenterText("60%");
+        charRAM.setCenterText(datas.getRAMUsage());
         charRAM.setCenterTextColor(Color.BLACK);
+        charRAM.setHoleRadius(60f);
+        charRAM.setCenterTextSize(6f);
         charRAM.invalidate();
     }
 
@@ -166,6 +420,51 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
         hostNameTv = (TextView) view.findViewById(R.id.tv_host_name);
         ipTv = (TextView) view.findViewById(R.id.tv_ip);
         macTv = (TextView) view.findViewById(R.id.tv_mac);
+        runningTimeDayTv = (TextView) view.findViewById(R.id.tv_running_time_day);
+        runningTimeHourTv = (TextView) view.findViewById(R.id.tv_running_time_hour);
+        runningTimeMinuteTv = (TextView) view.findViewById(R.id.tv_running_time_minute);
+        hostTv = (TextView) view.findViewById(R.id.tv_host);
+        nodeTv1 = (TextView) view.findViewById(R.id.tv_node1);
+        nodeTv2 = (TextView) view.findViewById(R.id.tv_node2);
+        nodeTv3 = (TextView) view.findViewById(R.id.tv_node3);
+        GPUTv1 = (TextView) view.findViewById(R.id.tv_GPU1);
+        GPUTv2 = (TextView) view.findViewById(R.id.tv_GPU2);
+        GPUTv3 = (TextView) view.findViewById(R.id.tv_GPU3);
+        changerTv = (TextView) view.findViewById(R.id.tv_changer);
+        GPUTypeTv = (TextView) view.findViewById(R.id.tv_GPU_type);
+        dominateFrequencyTv = (TextView) view.findViewById(R.id.tv_dominate_frequency);
+        coreCountTv = (TextView) view.findViewById(R.id.tv_core_count);
+        memoryTypeTv = (TextView) view.findViewById(R.id.tv_memory_type);
+        coreCountTv = (TextView) view.findViewById(R.id.tv_core_count);
+        hardTypeTv = (TextView) view.findViewById(R.id.tv_hard_type);
+        sizeTv = (TextView) view.findViewById(R.id.tv_size);
+        mount1Tv = (TextView) view.findViewById(R.id.tv_mount1);
+        mount2Tv = (TextView) view.findViewById(R.id.tv_mount2);
+        mount3Tv = (TextView) view.findViewById(R.id.tv_mount3);
+        size1Tv = (TextView) view.findViewById(R.id.tv_size1);
+        size2Tv = (TextView) view.findViewById(R.id.tv_size2);
+        size3Tv = (TextView) view.findViewById(R.id.tv_size3);
+        used1Tv = (TextView) view.findViewById(R.id.tv_used1);
+        used2Tv = (TextView) view.findViewById(R.id.tv_used2);
+        used3Tv = (TextView) view.findViewById(R.id.tv_used3);
+        per1Tv = (TextView) view.findViewById(R.id.tv_per1);
+        per2Tv = (TextView) view.findViewById(R.id.tv_per2);
+        per3Tv = (TextView) view.findViewById(R.id.tv_per3);
+        per1Img1 = (TextView) view.findViewById(R.id.img_per1_1);
+        per1Img2 = (TextView) view.findViewById(R.id.img_per1_2);
+        per1Img3 = (TextView) view.findViewById(R.id.img_per1_3);
+        per1Img4 = (TextView) view.findViewById(R.id.img_per1_4);
+        per1Img5 = (TextView) view.findViewById(R.id.img_per1_5);
+        per2Img1 = (TextView) view.findViewById(R.id.img_per2_1);
+        per2Img2 = (TextView) view.findViewById(R.id.img_per2_2);
+        per2Img3 = (TextView) view.findViewById(R.id.img_per2_3);
+        per2Img4 = (TextView) view.findViewById(R.id.img_per2_4);
+        per2Img5 = (TextView) view.findViewById(R.id.img_per2_5);
+        per3Img1 = (TextView) view.findViewById(R.id.img_per3_1);
+        per3Img2 = (TextView) view.findViewById(R.id.img_per3_2);
+        per3Img3 = (TextView) view.findViewById(R.id.img_per3_3);
+        per3Img4 = (TextView) view.findViewById(R.id.img_per3_4);
+        per3Img5 = (TextView) view.findViewById(R.id.img_per3_5);
     }
 
     public void onClick(View v){

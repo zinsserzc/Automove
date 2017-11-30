@@ -20,7 +20,7 @@
     <string name="minute">分</string>
     <string name="disk">磁盘</string>
     <string name="memory">内存</string>
-    <string name="temperature">温蒂</string>
+    <string name="temperature">温度</string>
     <string name="fault">故障</string>
     <string name="message">消息</string>
     <string name="host_name">主机名：</string>
@@ -35,7 +35,7 @@
     <string name="work">作业：</string>
     <string name="running">运行：</string>
     <string name="waiting">等待：</string>
-    <string name="GPU_type">GPU型号：</string>
+    <string name="CPU_name">CPU名称：</string>
     <string name="dominant_frequency">主频：</string>
     <string name="core_count">核数：</string>
     <string name="memory_type">内存型号：</string>

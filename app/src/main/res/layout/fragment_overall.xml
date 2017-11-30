@@ -73,6 +73,7 @@
                     android:orientation="horizontal"
                     >
                     <TextView
+                        android:id="@+id/tv_running_time_day"
                         android:layout_width="0dip"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
@@ -86,6 +87,7 @@
                         android:text="@string/day"
                         android:gravity="center"/>
                     <TextView
+                        android:id="@+id/tv_running_time_hour"
                         android:layout_width="0dip"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
@@ -99,6 +101,7 @@
                         android:text="@string/hour"
                         android:gravity="center"/>
                     <TextView
+                        android:id="@+id/tv_running_time_minute"
                         android:layout_width="0dip"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
@@ -317,11 +320,12 @@
                     android:paddingLeft="5dip"
                     android:text="@string/host"/>
                 <TextView
+                    android:id="@+id/tv_host"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:paddingLeft="5dip"
-                    android:text="28"
+                    android:text="0"
                     android:textColor="@color/blue"/>
             </LinearLayout>
 
@@ -366,6 +370,7 @@
                                     android:layout_height="20dip"
                                     android:src="@drawable/icon_up_normal"/>
                                 <TextView
+                                    android:id="@+id/tv_node1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:gravity="left"
@@ -383,6 +388,7 @@
                                     android:layout_height="20dip"
                                     android:src="@drawable/icon_up_warning"/>
                                 <TextView
+                                    android:id="@+id/tv_node2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:gravity="left"
@@ -401,6 +407,7 @@
                                     android:src="@drawable/icon_up_error"
                                     android:rotation="180"/>
                                 <TextView
+                                    android:id="@+id/tv_node3"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:gravity="left"
@@ -436,6 +443,7 @@
                                     android:layout_height="20dip"
                                     android:src="@drawable/icon_up_normal"/>
                                 <TextView
+                                    android:id="@+id/tv_GPU1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:gravity="left"
@@ -453,6 +461,7 @@
                                     android:layout_height="20dip"
                                     android:src="@drawable/icon_up_warning"/>
                                 <TextView
+                                    android:id="@+id/tv_GPU2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:gravity="left"
@@ -471,6 +480,7 @@
                                     android:src="@drawable/icon_up_error"
                                     android:rotation="180"/>
                                 <TextView
+                                    android:id="@+id/tv_GPU3"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:gravity="left"
@@ -493,6 +503,7 @@
                             android:paddingLeft="5dip"
                             android:text="@string/switchboard"/>
                         <TextView
+                            android:id="@+id/tv_changer"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="left"
@@ -585,7 +596,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
-                                    android:text="16"
+                                    android:text="0"
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
 
@@ -657,14 +668,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:paddingLeft="5dip"
-                        android:text="@string/GPU_type"
+                        android:text="@string/CPU_name"
                         android:gravity="center"/>
                     <TextView
+                        android:id="@+id/tv_GPU_type"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:paddingLeft="5dip"
-                        android:text="Intel-Xeon"
+                        android:text=""
                         android:textColor="@color/blue"/>
                 </LinearLayout>
 
@@ -681,6 +693,7 @@
                         android:text="@string/dominant_frequency"
                         android:gravity="center"/>
                     <TextView
+                        android:id="@+id/tv_dominate_frequency"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -702,6 +715,7 @@
                         android:text="@string/core_count"
                         android:gravity="center"/>
                     <TextView
+                        android:id="@+id/tv_core_count"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -744,6 +758,7 @@
                             android:text="@string/memory_type"
                             android:gravity="center"/>
                         <TextView
+                            android:id="@+id/tv_memory_type"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -765,6 +780,7 @@
                             android:text="@string/size"
                             android:gravity="center"/>
                         <TextView
+                            android:id="@+id/tv_size"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -798,11 +814,12 @@
                     android:text="@string/hard_type"/>
 
                 <TextView
+                    android:id="@+id/tv_hard_type"
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="SSD"
+                    android:text=""
                     android:textColor="@color/blue"/>
             </LinearLayout>
 
@@ -826,14 +843,16 @@
                         android:gravity="center"/>
 
                     <TextView
+                        android:id="@+id/tv_mount1"
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:layout_weight="1"
-                        android:text="/"
+                        android:text=""
                         android:gravity="center"
                         android:textColor="@color/blue"/>
 
                     <TextView
+                        android:id="@+id/tv_mount2"
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:layout_weight="1"
@@ -842,10 +861,54 @@
                         android:textColor="@color/blue"/>
 
                     <TextView
+                        android:id="@+id/tv_mount3"
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:layout_weight="1"
-                        android:text="/home"
+                        android:text=""
+                        android:gravity="center"
+                        android:textColor="@color/blue"/>
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dip"
+                        android:layout_weight="1"
+                        android:text="@string/Size"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/tv_size1"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dip"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:gravity="center"
+                        android:textColor="@color/blue"/>
+
+                    <TextView
+                        android:id="@+id/tv_size2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dip"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:gravity="center"
+                        android:textColor="@color/blue"/>
+
+                    <TextView
+                        android:id="@+id/tv_size3"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dip"
+                        android:layout_weight="1"
+                        android:text=""
                         android:gravity="center"
                         android:textColor="@color/blue"/>
                 </LinearLayout>
@@ -864,64 +927,29 @@
                         android:gravity="center"/>
 
                     <TextView
+                        android:id="@+id/tv_used1"
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:layout_weight="1"
-                        android:text="38G"
+                        android:text=""
                         android:gravity="center"
                         android:textColor="@color/blue"/>
 
                     <TextView
+                        android:id="@+id/tv_used2"
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:layout_weight="1"
-                        android:text="34M"
+                        android:text=""
                         android:gravity="center"
                         android:textColor="@color/blue"/>
 
                     <TextView
+                        android:id="@+id/tv_used3"
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:layout_weight="1"
-                        android:text="6.01"
-                        android:gravity="center"
-                        android:textColor="@color/blue"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dip"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dip"
-                        android:layout_weight="1"
-                        android:text="@string/Size"
-                        android:gravity="center"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dip"
-                        android:layout_weight="1"
-                        android:text="213G"
-                        android:gravity="center"
-                        android:textColor="@color/blue"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dip"
-                        android:layout_weight="1"
-                        android:text="477M"
-                        android:gravity="center"
-                        android:textColor="@color/blue"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dip"
-                        android:layout_weight="1"
-                        android:text="7.11"
+                        android:text=""
                         android:gravity="center"
                         android:textColor="@color/blue"/>
                 </LinearLayout>
@@ -943,40 +971,46 @@
                         android:layout_weight="1"
                         android:orientation="horizontal">
                         <TextView
+                            android:id="@+id/img_per1_1"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/img_per1_2"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/img_per1_3"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/img_per1_4"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/img_per1_5"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/tv_per1"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="19%"/>
+                            android:text=""/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -985,40 +1019,46 @@
                         android:layout_weight="1"
                         android:orientation="horizontal">
                         <TextView
+                            android:id="@+id/img_per2_1"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/img_per2_2"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/img_per2_3"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/img_per2_4"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/img_per2_5"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/tv_per2"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="19%"/>
+                            android:text=""/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -1027,40 +1067,46 @@
                         android:layout_weight="1"
                         android:orientation="horizontal">
                         <TextView
+                            android:id="@+id/img_per3_1"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/img_per3_2"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/img_per3_3"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/img_per3_4"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/img_per3_5"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
+                            android:id="@+id/tv_per3"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="19%"/>
+                            android:text=""/>
                     </LinearLayout>
 
                 </LinearLayout>
