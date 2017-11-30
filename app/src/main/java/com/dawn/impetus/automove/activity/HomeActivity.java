@@ -103,9 +103,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
-        String res = "";
-        Log.e("asd",res);
-        Toast.makeText(this,res,Toast.LENGTH_LONG).show();
+        if(ServerUtil.isRootUser())
+        {
+            Toast.makeText(this,"root用户",Toast.LENGTH_LONG).show();
+        }else {
+
+            Toast.makeText(this,"普通用户",Toast.LENGTH_LONG).show();
+        }
+
     }
 
 

@@ -1,5 +1,6 @@
 package com.dawn.impetus.automove.utils;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -47,6 +48,7 @@ public class ServerUtil {
 
 
     }
+
     /**
      * 获取系统版本
      *
@@ -55,7 +57,7 @@ public class ServerUtil {
     public static String getSysVersion() {
         String res = null;
         try {
-            res = ssh.execCmd("cat /etc/issue | sed -n '1p;1q'");
+            res = ssh.execCmd("cat /etc/issue | sed -n '1p;1q'").trim();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
@@ -72,7 +74,7 @@ public class ServerUtil {
     public static String getOpTime() {
         String res = null;
         try {
-            res = ssh.execCmd("date -d \"$(awk -F. '{print $1}' /proc/uptime) second ago\" +\"%Y-%m-%d %H:%M:%S\"");
+            res = ssh.execCmd("date -d \"$(awk -F. '{print $1}' /proc/uptime) second ago\" +\"%Y-%m-%d %H:%M:%S\"").trim();
 
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
@@ -106,7 +108,7 @@ public class ServerUtil {
     public static String getHsotName() {
         String res = null;
         try {
-            res = ssh.execCmd("hostname");
+            res = ssh.execCmd("hostname").trim();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {
@@ -122,7 +124,7 @@ public class ServerUtil {
     public static String getIP() {
         String res = null;
         try {
-            res = ssh.execCmd("ifconfig eth0 | grep \"inet addr\" | awk '{ print $2}' | awk -F: '{print $2}'");
+            res = ssh.execCmd("ifconfig eth0 | grep \"inet addr\" | awk '{ print $2}' | awk -F: '{print $2}'").trim();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {
@@ -138,7 +140,7 @@ public class ServerUtil {
     public static String getMAC() {
         String res = null;
         try {
-            res = ssh.execCmd("cat /sys/class/net/eth0/address");
+            res = ssh.execCmd("cat /sys/class/net/eth0/address").trim();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {
@@ -168,16 +170,17 @@ public class ServerUtil {
 
     /**
      * Json格式获取节点状态
+     * 里边可以获取节点所有信息
      *
      * @return
      */
     public static JSONObject getNodeStates() {
 
         JSONObject res = new JSONObject();
-        String xml ="";
+        String xml = "";
         try {
-            xml =ssh.execCmd("pbsnodes -x");
-            res=XML.toJSONObject(xml);
+            xml = ssh.execCmd("pbsnodes -x");
+            res = XML.toJSONObject(xml);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {
@@ -196,7 +199,7 @@ public class ServerUtil {
     public static String getCPUName() {
         String res = null;
         try {
-            res = ssh.execCmd("cat /proc/cpuinfo|grep name|uniq");
+            res = ssh.execCmd("cat /proc/cpuinfo|grep name|uniq").trim();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {
@@ -213,7 +216,7 @@ public class ServerUtil {
     public static String getCPUHZ() {
         String res = null;
         try {
-            res = ssh.execCmd("cat /proc/cpuinfo|grep MHz|head -1|cut -d':' -f 2");
+            res = ssh.execCmd("cat /proc/cpuinfo|grep MHz|head -1|cut -d':' -f 2").trim();
             res = res.substring(0, 5) + "MHz";
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
@@ -224,15 +227,15 @@ public class ServerUtil {
 
     /**
      * 获取cpu核数（总逻辑cpu数）
-     * <p>
+     * <p/>
      * # 总核数 = 物理CPU个数 X 每颗物理CPU的核数
      * # 总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数
      * # 查看物理CPU个数
      * cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l
-     * <p>
+     * <p/>
      * # 查看每个物理CPU中core的个数(即核数)
      * cat /proc/cpuinfo| grep "cpu cores"| uniq
-     * <p>
+     * <p/>
      * # 查看逻辑CPU的个数
      * cat /proc/cpuinfo| grep "processor"| wc -l
      *
@@ -241,7 +244,7 @@ public class ServerUtil {
     public static String getCPUCores() {
         String res = null;
         try {
-            res = ssh.execCmd("cat /proc/cpuinfo| grep processor| wc -l");
+            res = ssh.execCmd("cat /proc/cpuinfo| grep processor| wc -l").trim();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {
@@ -312,6 +315,7 @@ public class ServerUtil {
         }
 
     }
+
     /**
      * 获取内存使用率
      *
@@ -333,6 +337,7 @@ public class ServerUtil {
 
     /**
      * 获取cpu温度
+     *
      * @return
      */
     public static String getCPUTemp() {
@@ -352,21 +357,20 @@ public class ServerUtil {
 /////////////////////////////////////////作业信息/////////////////////////////////////////
 
 
-
 /////////////////////////////////////////用户管理//////////////////////////////////////////
-
 
 
     /**
      * 获取所有(普通)用户
+     *
      * @return
      */
     public static List<String> getUserList() {
 
         List<String> res = new ArrayList<>();
         try {
-            String[] oriString = ssh.execCmd("gawk -F: '/(home).*(bash$)/{print $1\" \"$3\" \"$4\"\"$6}' /etc/passwd|awk '{print $1}'").split("\n");
-            for (String a:oriString) {
+            String[] oriString = ssh.execCmd("gawk -F: '/(home).*(bash$)/{print $1}' /etc/passwd").split("\n");
+            for (String a : oriString) {
                 res.add(a);
             }
 
@@ -374,6 +378,32 @@ public class ServerUtil {
             Log.e(TAG, e.getMessage());
         } finally {
             return res;
+        }
+
+    }
+
+    /**
+     * 判断登录用户是否是root用户
+     * @return
+     */
+    public static boolean isRootUser() {
+        Context context = ContextApplication.getAppContext();
+        String userName="";
+        userName = SPUtil.get(context, "userName", "").toString();
+
+        boolean res =false;
+        try {
+            String str="";
+            str = ssh.execCmd("cat /etc/passwd|grep ^"+userName+"|awk -F':' '{print $3}'").trim();
+            if(Integer.valueOf(str)<500)
+                res=true;
+
+        }catch (Exception e)
+        {
+            Log.e(TAG,e.getLocalizedMessage());
+        }finally {
+
+            return  res;
         }
 
     }

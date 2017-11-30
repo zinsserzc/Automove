@@ -29,8 +29,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginBtn;
     private String userName, passWord;
     private Handler loginHandler;
-    private ServerUtil svUtil;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Message msg = new Message();
-                if(svUtil.connect())
+                if(ServerUtil.connect())
                 {
                     msg.what = 1;
                 }else {
