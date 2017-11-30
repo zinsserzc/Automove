@@ -2,6 +2,12 @@ package com.dawn.impetus.automove.utils;
 
 import android.util.Log;
 
+import org.json.JSONObject;
+import org.json.XML;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Administrator on 2017/11/20 0020.
  * 此类用于获取服务器数据
@@ -41,6 +47,22 @@ public class ServerUtil {
 
 
     }
+    /**
+     * 获取系统版本
+     *
+     * @return
+     */
+    public static String getSysVersion() {
+        String res = null;
+        try {
+            res = ssh.execCmd("cat /etc/issue | sed -n '1p;1q'");
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            return res;
+        }
+    }
 
     /**
      * 获取开机时间
@@ -59,15 +81,16 @@ public class ServerUtil {
         }
     }
 
+
     /**
      * 获取系统运行时间
      *
-     * @return
+     * @return 分别代表 天，时，分
      */
-    public static String getRunTime() {
-        String res = null;
+    public static String[] getRunTime() {
+        String[] res = null;
         try {
-            res = ssh.execCmd("cat /proc/uptime| awk -F. '{run_days=$1 / 86400;run_hour=($1 % 86400)/3600;run_minute=($1 % 3600)/60;run_second=$1 % 60;printf(\"%d天%d时%d分%d秒\",run_days,run_hour,run_minute,run_second)}'");
+            res = ssh.execCmd("cat /proc/uptime| awk -F. '{run_days=$1 / 86400;run_hour=($1 % 86400)/3600;run_minute=($1 % 3600)/60;printf(\"%d %d %d\",run_days,run_hour,run_minute)}'").trim().split(" ");
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {
@@ -124,6 +147,48 @@ public class ServerUtil {
     }
 
     /**
+     * 获取总节点数目
+     *
+     * @return
+     */
+    public static String getNodeNum() {
+
+        String res = null;
+        try {
+            res = ssh.execCmd("pbsnodes|grep -c  '^comput'").trim();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            return res;
+        }
+
+
+    }
+
+    /**
+     * Json格式获取节点状态
+     *
+     * @return
+     */
+    public static JSONObject getNodeStates() {
+
+        JSONObject res = new JSONObject();
+        String xml ="";
+        try {
+            xml =ssh.execCmd("pbsnodes -x");
+            res=XML.toJSONObject(xml);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            return res;
+        }
+
+
+    }
+
+
+    /**
      * 获取cpu名称
      *
      * @return
@@ -149,7 +214,7 @@ public class ServerUtil {
         String res = null;
         try {
             res = ssh.execCmd("cat /proc/cpuinfo|grep MHz|head -1|cut -d':' -f 2");
-            res = res.substring(0,5)+"MHz";
+            res = res.substring(0, 5) + "MHz";
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {
@@ -159,17 +224,18 @@ public class ServerUtil {
 
     /**
      * 获取cpu核数（总逻辑cpu数）
-     *
+     * <p>
      * # 总核数 = 物理CPU个数 X 每颗物理CPU的核数
-     # 总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数
+     * # 总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数
      * # 查看物理CPU个数
-     cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l
-
-     # 查看每个物理CPU中core的个数(即核数)
-     cat /proc/cpuinfo| grep "cpu cores"| uniq
-
-     # 查看逻辑CPU的个数
-     cat /proc/cpuinfo| grep "processor"| wc -l
+     * cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l
+     * <p>
+     * # 查看每个物理CPU中core的个数(即核数)
+     * cat /proc/cpuinfo| grep "cpu cores"| uniq
+     * <p>
+     * # 查看逻辑CPU的个数
+     * cat /proc/cpuinfo| grep "processor"| wc -l
+     *
      * @return
      */
     public static String getCPUCores() {
@@ -185,9 +251,10 @@ public class ServerUtil {
 
     /**
      * 获取内存大小
+     *
      * @return
      */
-    public static String getMemSize(){
+    public static String getMemSize() {
 
         String res = null;
         try {
@@ -201,5 +268,115 @@ public class ServerUtil {
 
 
     }
+
+    /**
+     * 获取硬盘信息
+     * 第一列表示路径
+     * 第二列表示总大小
+     * 第三列表示占用大小
+     * 第四列表示使用率
+     *
+     * @return
+     */
+    public static String[][] getDiskInfo() {
+
+        String[][] res = new String[3][4];
+        try {
+            res[0] = ssh.execCmd("df -h|awk 'NR==2{print $6\" \"$2\" \"$3\" \"$5}'").split(" ");
+            res[1] = ssh.execCmd("df -h|awk 'NR==4{print $6\" \"$2\" \"$3\" \"$5}'").split(" ");
+            res[2] = ssh.execCmd("df -h|awk 'NR==6{print $6\" \"$2\" \"$3\" \"$5}'").split(" ");
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            return res;
+        }
+
+
+    }
+
+    /**
+     * 获取cpu使用率
+     *
+     * @return
+     */
+    public static String getCPUUsage() {
+
+        String res = null;
+        try {
+            res = ssh.execCmd("mpstat|awk 'NR==4{print 100- $12\"%\"}'").trim();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            return res;
+        }
+
+    }
+    /**
+     * 获取内存使用率
+     *
+     * @return
+     */
+    public static String getMemUsage() {
+
+        String res = null;
+        try {
+            res = ssh.execCmd("free -m|sed -n '2p'|awk '{print $3/$2*100\"%\"}'").trim();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            return res;
+        }
+
+    }
+
+    /**
+     * 获取cpu温度
+     * @return
+     */
+    public static String getCPUTemp() {
+
+        String res = null;
+        try {
+            res = ssh.execCmd("cat /sys/class/hwmon/hwmon0/device/temp1_input").trim();
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            return res;
+        }
+
+    }
+
+/////////////////////////////////////////作业信息/////////////////////////////////////////
+
+
+
+/////////////////////////////////////////用户管理//////////////////////////////////////////
+
+
+
+    /**
+     * 获取所有(普通)用户
+     * @return
+     */
+    public static List<String> getUserList() {
+
+        List<String> res = new ArrayList<>();
+        try {
+            String[] oriString = ssh.execCmd("gawk -F: '/(home).*(bash$)/{print $1\" \"$3\" \"$4\"\"$6}' /etc/passwd|awk '{print $1}'").split("\n");
+            for (String a:oriString) {
+                res.add(a);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            return res;
+        }
+
+    }
+
 
 }

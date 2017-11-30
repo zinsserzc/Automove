@@ -99,6 +99,14 @@ public class HomeActivity extends AppCompatActivity {
 
         //super.onBackPressed();
     }
+    //测试用
+    @Override
+    public void onStart(){
+        super.onStart();
+        String res = "";
+        Log.e("asd",res);
+        Toast.makeText(this,res,Toast.LENGTH_LONG).show();
+    }
 
 
 }
