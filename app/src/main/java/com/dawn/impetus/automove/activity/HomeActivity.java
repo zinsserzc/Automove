@@ -9,6 +9,8 @@ import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.dawn.impetus.automove.R;
+import com.dawn.impetus.automove.entities.Job;
+import com.dawn.impetus.automove.entities.Node;
 import com.dawn.impetus.automove.fragments.ManageFragment;
 import com.dawn.impetus.automove.fragments.MonitorFragment;
 import com.dawn.impetus.automove.fragments.OverallFragment;
@@ -17,6 +19,8 @@ import com.dawn.impetus.automove.fragments.WorkFragment;
 import com.dawn.impetus.automove.ui.TabIndicatorView;
 import com.dawn.impetus.automove.utils.SSHUtil;
 import com.dawn.impetus.automove.utils.ServerUtil;
+
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -103,13 +107,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
-        if(ServerUtil.isRootUser())
-        {
-            Toast.makeText(this,"root用户",Toast.LENGTH_LONG).show();
-        }else {
-
-            Toast.makeText(this,"普通用户",Toast.LENGTH_LONG).show();
-        }
+        List<Node> jbs=ServerUtil.getNodeInfos();
 
     }
 

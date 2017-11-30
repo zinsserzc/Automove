@@ -3,11 +3,18 @@ package com.dawn.impetus.automove.utils;
 import android.content.Context;
 import android.util.Log;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.dawn.impetus.automove.entities.Job;
+import com.dawn.impetus.automove.entities.Node;
+
 import org.json.XML;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/11/20 0020.
@@ -48,6 +55,9 @@ public class ServerUtil {
 
 
     }
+
+
+    /////////////////////////////////////////集群总览//////////////////////////////////////////
 
     /**
      * 获取系统版本
@@ -169,21 +179,30 @@ public class ServerUtil {
     }
 
     /**
-     * Json格式获取节点状态
-     * 里边可以获取节点所有信息
+     * 获取空闲 占用 占用且忙 关闭 4种状态的节点数目
      *
      * @return
      */
-    public static JSONObject getNodeStates() {
-
-        JSONObject res = new JSONObject();
-        String xml = "";
+    public static Map<String, String> getNodeStateNum() {
+        Map<String, String> res = new HashMap<>();
+        String free = null;
+        String exclusive = null;
+        String busy = null;
+        String down = null;
         try {
-            xml = ssh.execCmd("pbsnodes -x");
-            res = XML.toJSONObject(xml);
+
+            free = ssh.execCmd("pbsnodes|grep -c free$").trim();
+            exclusive = ssh.execCmd("pbsnodes|grep -c exclusive$").trim();
+            busy = ssh.execCmd("pbsnodes|grep -c busy$");
+            down = ssh.execCmd("pbsnodes|grep -c down$").trim();
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getLocalizedMessage());
         } finally {
+            res.put("free", free);
+            res.put("exclusive", exclusive);
+            res.put("busy", busy);
+            res.put("down", down);
+
             return res;
         }
 
@@ -354,8 +373,131 @@ public class ServerUtil {
 
     }
 
-/////////////////////////////////////////作业信息/////////////////////////////////////////
+/////////////////////////////////////////监控信息/////////////////////////////////////////
 
+    /**
+     * 获取节点List
+     * 里边可以获取节点的所有信息(直接用就可以了)
+     *
+     * @return
+     */
+    public static List<Node> getNodeInfos() {
+
+        List<Node> res = new ArrayList<>();
+
+        //有两种jsonobject xml转json用org，转对象的用fastjson
+        String resJson = null;
+        String xml = "";
+        try {
+            xml = ssh.execCmd("pbsnodes -x");
+            resJson = XML.toJSONObject(xml).toString();
+            //此处要先将json文本转为jsonObj再操作
+            JSONObject data = (JSONObject) (JSON.parseObject(resJson).get("Data"));
+            JSONArray nodes = data.getJSONArray("Node");
+            res = JSON.parseArray(nodes.toJSONString(), Node.class);
+
+            for (Node n : res) {
+
+                //设置已使用&未使用核心数
+                int used = 0;
+                int unUsed = 0;
+
+                if (n.getJobs() != null && n.getJobs().equals(""))//有作业
+                {
+                    used = n.getJobs().split(",").length;
+
+                    n.setUsedCoreNum(used);
+
+                }
+                unUsed = n.getNp() - used;
+                n.setUnUsedCoreNum(unUsed);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            return res;
+        }
+
+
+    }
+
+
+/////////////////////////////////////////作业信息//////////////////////////////////////////
+
+    /**
+     * 获取所有作业信息
+     *
+     * @return
+     */
+    public static List<Job> getJobsInfo() {
+
+        List<Job> jobs = new ArrayList<>();
+
+        int jobNum = 0;
+        try {
+
+            jobNum = Integer.valueOf(ssh.execCmd("showq|grep -c  ^[0-9][0-9][0-9][0-9]").trim());
+            List<Node> nodes = getNodeInfos();//从这里获得占用节点情况
+
+
+            for (int i = 1; i <= jobNum; i++) {
+
+                String jobName = "";
+                String user = "";
+                List<String> excluNode = new ArrayList<>();
+                int excluCoreNum =0;
+                String time = "";
+                String state = "";
+                //获取数据
+                jobName = ssh.execCmd("showq|grep ^[0-9][0-9][0-9][0-9]|awk 'NR==" + i + "{print $1}'").trim();
+                user = ssh.execCmd("showq|grep ^[0-9][0-9][0-9][0-9]|awk 'NR==" + i + "{print $2}'").trim();
+                //解析json获取占用节点
+                for(Node node:nodes)
+                {
+                    if(node.getJobs()!=null&&!node.getJobs().equals(""))//有作业
+                    {
+                        if(node.getJobs().contains(jobName))//有此作业
+                        {
+                            excluNode.add(node.getName());
+                        }
+
+                    }
+                }
+                excluCoreNum = Integer.valueOf(ssh.execCmd("showq|grep ^[0-9][0-9][0-9][0-9]|awk 'NR==" + i + "{print $4}'").trim());
+                time = ssh.execCmd("showq|grep ^[0-9][0-9][0-9][0-9]|awk 'NR==" + i + "{print $5}'").trim();
+                state = ssh.execCmd("showq|grep ^[0-9][0-9][0-9][0-9]|awk 'NR==" + i + "{print $3}'").trim();
+
+                Job jb = new Job(jobName, user, excluNode,excluCoreNum, time, state);
+                jobs.add(jb);
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getLocalizedMessage());
+            jobs = null;
+        } finally {
+            return jobs;
+        }
+
+    }
+
+    /**
+     * 删除作业,调用前先调用函数判断当前用户是否拥有root权限
+     * @return
+     */
+    public static boolean deleteJob(String jobName){
+        boolean res = false;
+
+        try {
+            ssh.execCmd("qdel "+jobName);
+            res = true;
+        }catch (Exception e)
+        {
+            Log.e(TAG,e.getLocalizedMessage());
+        }finally {
+            return  res;
+        }
+    }
 
 /////////////////////////////////////////用户管理//////////////////////////////////////////
 
@@ -384,26 +526,26 @@ public class ServerUtil {
 
     /**
      * 判断登录用户是否是root用户
+     *
      * @return
      */
     public static boolean isRootUser() {
         Context context = ContextApplication.getAppContext();
-        String userName="";
+        String userName = "";
         userName = SPUtil.get(context, "userName", "").toString();
 
-        boolean res =false;
+        boolean res = false;
         try {
-            String str="";
-            str = ssh.execCmd("cat /etc/passwd|grep ^"+userName+"|awk -F':' '{print $3}'").trim();
-            if(Integer.valueOf(str)<500)
-                res=true;
+            String str = "";
+            str = ssh.execCmd("cat /etc/passwd|grep ^" + userName + "|awk -F':' '{print $3}'").trim();
+            if (Integer.valueOf(str) < 500)
+                res = true;
 
-        }catch (Exception e)
-        {
-            Log.e(TAG,e.getLocalizedMessage());
-        }finally {
+        } catch (Exception e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        } finally {
 
-            return  res;
+            return res;
         }
 
     }
