@@ -46,9 +46,10 @@ public class HomeActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("error ", e.getMessage());
         }
-
         initView();
         init();
+
+
     }
 
     private void init() {
@@ -95,6 +96,7 @@ public class HomeActivity extends AppCompatActivity {
             isFirstPress = true;
         } else {
             //Process.killProcess(Process.myPid());
+            ServerUtil.disconnect();
             Process.killProcess(Process.myPid());
             //ActivityManager am = (ActivityManager)getSystemService (Context.ACTIVITY_SERVICE);
             //am.restartPackage(getPackageName());
@@ -103,12 +105,13 @@ public class HomeActivity extends AppCompatActivity {
 
         //super.onBackPressed();
     }
+
     //测试用
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
-        List<Node> jbs=ServerUtil.getNodeInfos();
-
+        //List<Node> jbs=ServerUtil.getNodeInfos();
+        //Toast.makeText(this,ServerUtil.getIP(),Toast.LENGTH_LONG).show();
     }
 
 

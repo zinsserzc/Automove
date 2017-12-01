@@ -132,11 +132,11 @@ public class ServerUtil {
      * @return
      */
     public static String getIP() {
-        String res = null;
+        String res = "10.10.10.100";
         try {
-            res = ssh.execCmd("ifconfig eth0 | grep \"inet addr\" | awk '{ print $2}' | awk -F: '{print $2}'").trim();
+            //res = ssh.execCmd("ip add|awk -F '[ /]+' 'NR==8 {print $3}'");
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.toString());
         } finally {
             return res;
         }
@@ -218,7 +218,7 @@ public class ServerUtil {
     public static String getCPUName() {
         String res = null;
         try {
-            res = ssh.execCmd("cat /proc/cpuinfo|grep name|uniq").trim();
+            res = ssh.execCmd("cat /proc/cpuinfo|grep name|uniq|awk -F':' '{print $2}'|awk '{print $1\" \"$2}'").trim();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {
@@ -269,6 +269,23 @@ public class ServerUtil {
         } finally {
             return res;
         }
+    }
+
+    /**
+     * 获取内存型号
+     * @return
+     */
+    public static String getMemType(){
+        String res ="DDR5";
+        try {
+            //res=ssh.execCmd();
+        }catch (Exception e)
+        {
+            Log.e(TAG,e.toString());
+        }finally {
+            return  res;
+        }
+
     }
 
     /**
@@ -323,10 +340,11 @@ public class ServerUtil {
      * @return
      */
     public static String getCPUUsage() {
-
-        String res = null;
+        String str ="";
+        String res = "";
         try {
-            res = ssh.execCmd("mpstat|awk 'NR==4{print 100- $12\"%\"}'").trim();
+            str = ssh.execCmd("mpstat|awk 'NR==4{print 100- $12}'").trim();
+            res=str.substring(0,str.indexOf(".")+2)+"%";
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {
@@ -342,10 +360,11 @@ public class ServerUtil {
      */
     public static String getMemUsage() {
 
-        String res = null;
+        String str = "";
+        String res ="";
         try {
-            res = ssh.execCmd("free -m|sed -n '2p'|awk '{print $3/$2*100\"%\"}'").trim();
-
+            str = ssh.execCmd("free -m|sed -n '2p'|awk '{print $3/$2*100}'").trim();
+            res=str.substring(0,str.indexOf(".")+2)+"%";
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {
