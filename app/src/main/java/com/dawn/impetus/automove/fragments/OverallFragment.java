@@ -351,6 +351,7 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
         datas.setHardData(ServerUtil.getDiskInfo());
         datas.setCPUUsage(ServerUtil.getCPUUsage());
         datas.setRAMUsage(ServerUtil.getMemUsage());
+        datas.setMemoryType(ServerUtil.getMemType());
     }
 
     private void drawChart() {
