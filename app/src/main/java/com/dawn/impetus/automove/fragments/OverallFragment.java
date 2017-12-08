@@ -21,6 +21,7 @@ import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
 import com.dawn.impetus.automove.R;
 import com.dawn.impetus.automove.entities.OverallData;
+import com.dawn.impetus.automove.threadpool.ThreadManager;
 import com.dawn.impetus.automove.utils.ServerUtil;
 import com.dawn.impetus.automove.utils.StringUtil;
 import com.dawn.impetus.automove.utils.VoiceUtil;
@@ -38,11 +39,15 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TimerTask;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 总览
  */
 public class OverallFragment extends Fragment implements View.OnClickListener{
+
+    private static final float WARNING_TEMP = 80;
+    private static final float WARNING_CPU_USAGE = 0.8f;
 
     private final long REFRESHTIME = 10*1000;
 
@@ -58,6 +63,13 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
     //图表
     private PieChart chartCPU;
     private PieChart charRAM;
+
+    //磁盘、内存、温度、故障、消息图片
+    private ImageView diskStateImg;
+    private ImageView memoryStateImg;
+    private ImageView tempStateImg;
+    private ImageView faultStateImg;
+    private ImageView messageStateImg;
 
     //开机时间
     private TextView startTimeTv;
@@ -129,6 +141,15 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
     private TextView per3Img4;
     private TextView per3Img5;
 
+    //更新ui线程
+    private Thread updateThread = null;
+    //标记线程是否结束
+    private boolean isRunning = true;
+    //防止多次产生ui线程
+    private boolean isNewRunnable = true;
+
+    //是否第一次加载
+    private boolean isFirst = true;
 
 
     @Override
@@ -144,13 +165,22 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
 
     private void init() {
         iconSearch.setOnClickListener(this);
-        setText();
+        if(isFirst){
+            startUpdate();
+        }
+
         //初始百度语音
         voice = new VoiceUtil(this.getActivity());
-        drawChart();
 
-        //startUpdate();
+    }
 
+    private void changeState(){
+        if(datas.getCPUtemp() > WARNING_TEMP){
+            tempStateImg.setImageResource(R.drawable.icon_warning_state);
+        }
+        if(StringUtil.percentageToFloat(datas.getCPUUsage()) > WARNING_CPU_USAGE){
+            memoryStateImg.setImageResource(R.drawable.icon_warning_state);
+        }
     }
 
     private void startUpdate(){
@@ -158,21 +188,64 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                while(true) {
-
-                    try {
-                        Thread.currentThread().sleep(REFRESHTIME);
-                    } catch (Exception e) {
-                        Toast.makeText(OverallFragment.this.getActivity(),"网络连接中断，请刷新界面！",Toast.LENGTH_LONG).show();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setText();
+                        //状态图标显示
+                        changeState();
+                        drawChart();
                     }
-                    setText();
-                    showPercentageImage();
-                    drawChart();
-                }
+                });
+
             }
         };
-        Thread thread = new Thread(r);
-        thread.run();
+        ThreadManager.THREAD_POOL_EXECUTOR.execute(r);
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(!isFirst){
+            startUpdate();
+        }
+        isFirst = false;
+        isRunning = true;
+        Runnable updateTask = new Runnable() {
+            @Override
+            public void run() {
+                while(isRunning){
+                    try {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setText();
+                                //状态图标显示
+                                changeState();
+                                drawChart();
+                            }
+                        });
+                        Thread.currentThread().sleep(60000);
+                    }catch (Exception e){
+                        Toast.makeText(getActivity(),"网络连接中断！",Toast.LENGTH_SHORT).show();
+                    }
+                }
+                //可以新建线程
+                isNewRunnable = true;
+            }
+        };
+        if(isNewRunnable) {
+            //阻止新建线程
+            isNewRunnable = false;
+            ThreadManager.THREAD_POOL_EXECUTOR.execute(updateTask);
+        }
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        isRunning = false;
     }
 
     private void setText(){
@@ -187,8 +260,8 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
         ipTv.setText(datas.getIp());
         macTv.setText(datas.getMac());
         runningTimeDayTv.setText(datas.getRunningTime()[0]);
-        runningTimeDayTv.setText(datas.getRunningTime()[1]);
-        runningTimeDayTv.setText(datas.getRunningTime()[2]);
+        runningTimeHourTv.setText(datas.getRunningTime()[1]);
+        runningTimeMinuteTv.setText(datas.getRunningTime()[2]);
         hostTv.setText(datas.getHost());
         nodeTv1.setText(datas.getNode1());
         nodeTv2.setText(datas.getNode2());
@@ -352,14 +425,15 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
         datas.setCPUUsage(ServerUtil.getCPUUsage());
         datas.setRAMUsage(ServerUtil.getMemUsage());
         datas.setMemoryType(ServerUtil.getMemType());
+        datas.setCPUtemp(Float.parseFloat(ServerUtil.getCPUTemp()));
     }
 
     private void drawChart() {
         //pieChart
         ArrayList<PieEntry> entriesCPU = new ArrayList<>();
         float cpuFloat = StringUtil.percentageToFloat(datas.getCPUUsage());
-        entriesCPU.add(new PieEntry(cpuFloat,"Green"));
-        entriesCPU.add(new PieEntry(1-cpuFloat,"Red"));
+        entriesCPU.add(new PieEntry(cpuFloat,"Usage"));
+        entriesCPU.add(new PieEntry(1-cpuFloat,"Free"));
 
         ArrayList<Integer> colorsCPU = new ArrayList<>();
         colorsCPU.add(Color.BLUE);
@@ -380,13 +454,14 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
         chartCPU.setCenterTextColor(Color.BLACK);
         chartCPU.setHoleRadius(60f);
         chartCPU.setCenterTextSize(6f);
+        chartCPU.setDrawMarkerViews(false);
         chartCPU.invalidate();
 
         //ramChart
         ArrayList<PieEntry> entriesRAM = new ArrayList<>();
         float RAMFloat = StringUtil.percentageToFloat(datas.getRAMUsage());
-        entriesRAM.add(new PieEntry(RAMFloat,"Green"));
-        entriesRAM.add(new PieEntry(1-RAMFloat,"Red"));
+        entriesRAM.add(new PieEntry(RAMFloat,"Usage"));
+        entriesRAM.add(new PieEntry(1-RAMFloat,"Free"));
 
         ArrayList<Integer> colorsRAM = new ArrayList<>();
         colorsRAM.add(Color.BLUE);
@@ -466,6 +541,12 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
         per3Img3 = (TextView) view.findViewById(R.id.img_per3_3);
         per3Img4 = (TextView) view.findViewById(R.id.img_per3_4);
         per3Img5 = (TextView) view.findViewById(R.id.img_per3_5);
+
+        diskStateImg = (ImageView) view.findViewById(R.id.icon_disk_state);
+        memoryStateImg = (ImageView) view.findViewById(R.id.icon_memory_state);
+        tempStateImg = (ImageView) view.findViewById(R.id.icon_temperature_state);
+        faultStateImg = (ImageView) view.findViewById(R.id.icon_fault_state);
+        messageStateImg = (ImageView) view.findViewById(R.id.icon_message_state);
     }
 
     public void onClick(View v){

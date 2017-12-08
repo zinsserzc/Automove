@@ -1,13 +1,39 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dawn.impetus.automove.fragments.ManageFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.dawn.impetus.automove.fragments.ManageFragment"
+    android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.dawn.impetus.automove.ui.TitleView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:myTitle = "@string/manager"
+        app:backIconIsVisible = "false">
+    </com.dawn.impetus.automove.ui.TitleView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dip">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_count"/>
+        <TextView
+            android:id="@+id/tv_user_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/lv_manage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="guanli" />
+        android:divider="@null"></ListView>
 
-</FrameLayout>
+</LinearLayout>

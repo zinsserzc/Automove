@@ -48,6 +48,17 @@
     <string name="cpu_use">CPU利用率：</string>
     <string name="ram_use">RAM利用率：</string>
 
+    <!--管理-->
+    <string name="user_count">用户总数：</string>
+    <!--监控-->
+    <string name="node_monitor">节点</string>
+    <string name="core_used">已用核数</string>
+    <string name="core_free">可用核数</string>
+    <string name="node_free">空闲节点：</string>
+    <string name="node_busy">忙节点：</string>
+    <string name="node_down">无响应节点：</string>
+    <string name="node_exclusive">负载节点：</string>
+
     <!--登录-->
 	<string name="idtxthint">用户名</string>
     <string name="pwdtxthint">密码</string>

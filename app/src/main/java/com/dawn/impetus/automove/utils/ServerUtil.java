@@ -106,6 +106,7 @@ public class ServerUtil {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {
+            //Log.e("runningTime",res[0]+" "+res[1]+" "+res[2]);
             return res;
         }
     }

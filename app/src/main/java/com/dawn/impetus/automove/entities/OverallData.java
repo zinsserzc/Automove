@@ -63,6 +63,16 @@ public class OverallData {
     private String CPUUsage;
     //RAM使用率
     private String RAMUsage;
+    //CPU温度
+    private float CPUtemp;
+
+    public float getCPUtemp() {
+        return CPUtemp;
+    }
+
+    public void setCPUtemp(float CPUtemp) {
+        this.CPUtemp = CPUtemp;
+    }
 
     public String getRAMUsage() {
         return RAMUsage;
@@ -144,8 +154,12 @@ public class OverallData {
     }
 
     public void setNodes(Map<String,String> map){
+//        Log.e("exclusive",map.get("exclusive"));
+//        Log.e("busy",map.get("busy"));
+        int exclusive = Integer.parseInt(map.get("exclusive").trim());
+        int busy = Integer.parseInt(map.get("busy").trim());
         this.node1 = map.get("free");
-        this.node2 = map.get("busy");
+        this.node2 = String.valueOf(busy + exclusive);
         this.node3 = map.get("down");
     }
 
@@ -232,6 +246,7 @@ public class OverallData {
     }
 
     public void setRunningTime(String[] runningTime) {
+        //Log.e("runningTimeData",runningTime[0]+" "+runningTime[1]+" "+runningTime[2]);
         this.runningTime = runningTime;
     }
 

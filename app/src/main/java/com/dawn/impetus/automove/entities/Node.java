@@ -1,5 +1,7 @@
 package com.dawn.impetus.automove.entities;
 
+import android.util.Log;
+
 import java.io.Serializable;
 
 /**
@@ -19,6 +21,7 @@ public class Node implements Serializable{
     //private String mom_manager_port;
 
     public int getUsedCoreNum() {
+        Log.e("used",String.valueOf(usedCoreNum));
         return usedCoreNum;
     }
 
@@ -27,6 +30,7 @@ public class Node implements Serializable{
     }
 
     public int getUnUsedCoreNum() {
+        Log.e("unUsedCoreNum",String.valueOf(unUsedCoreNum));
         return unUsedCoreNum;
     }
 
@@ -50,6 +54,7 @@ public class Node implements Serializable{
     }
 
     public String getState() {
+        Log.e("state",String.valueOf(state));
         return state;
     }
 

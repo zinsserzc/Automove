@@ -8,6 +8,7 @@
     <color name="button_focus">@color/colorPrimaryDark</color>
     <color name="button_normal">@color/blue</color>
     <color name="blue">#014ea0</color>
+    <color name="green">#99FF66</color>
 
 
     <!--总览-->

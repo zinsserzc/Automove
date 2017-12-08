@@ -51,7 +51,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:textColor="@color/blue"
-                    android:text="2017-08-14 22:22:42:57"/>
+                    android:text=""/>
             </LinearLayout>
 
             <!--运行时间-->
@@ -78,7 +78,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:textColor="@color/blue"
-                        android:text="38"
+                        android:text=""
                         android:gravity="center"/>
                     <TextView
                         android:layout_width="0dip"
@@ -92,7 +92,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:textColor="@color/blue"
-                        android:text="19"
+                        android:text=""
                         android:gravity="center"/>
                     <TextView
                         android:layout_width="0dip"
@@ -106,7 +106,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:textColor="@color/blue"
-                        android:text="49"
+                        android:text=""
                         android:gravity="center"/>
                     <TextView
                         android:layout_width="0dip"
@@ -253,7 +253,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/blue"
                     android:gravity="center"
-                    android:text="admin"/>
+                    android:text=""/>
             </LinearLayout>
 
             <!--ip地址-->
@@ -275,7 +275,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/blue"
                     android:gravity="center"
-                    android:text="10.10.10.100"/>
+                    android:text=""/>
             </LinearLayout>
 
             <!--mac地址-->
@@ -297,7 +297,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/blue"
                     android:gravity="center"
-                    android:text="00:e0:ed:31:98:f8"/>
+                    android:text=""/>
             </LinearLayout>
         </LinearLayout>
 
@@ -325,7 +325,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:paddingLeft="5dip"
-                    android:text="0"
+                    android:text=""
                     android:textColor="@color/blue"/>
             </LinearLayout>
 
@@ -375,7 +375,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
-                                    android:text="9"
+                                    android:text=""
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
                             <LinearLayout
@@ -393,7 +393,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
-                                    android:text="19"
+                                    android:text=""
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
                             <LinearLayout
@@ -412,7 +412,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
-                                    android:text="0"
+                                    android:text=""
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
                         </LinearLayout>
@@ -448,7 +448,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
-                                    android:text="0"
+                                    android:text=""
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
                             <LinearLayout
@@ -466,7 +466,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
-                                    android:text="0"
+                                    android:text=""
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
                             <LinearLayout
@@ -485,7 +485,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
-                                    android:text="0"
+                                    android:text=""
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
                         </LinearLayout>
@@ -508,7 +508,7 @@
                             android:layout_height="match_parent"
                             android:gravity="left"
                             android:paddingLeft="5dip"
-                            android:text="0"
+                            android:text=""
                             android:textColor="@color/blue"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -549,7 +549,7 @@
                                 android:layout_height="match_parent"
                                 android:gravity="left"
                                 android:paddingLeft="5dip"
-                                android:text="0"
+                                android:text=""
                                 android:textColor="@color/blue"/>
                         </LinearLayout>
 
@@ -569,7 +569,7 @@
                                 android:layout_height="match_parent"
                                 android:gravity="left"
                                 android:paddingLeft="5dip"
-                                android:text="0"
+                                android:text=""
                                 android:textColor="@color/blue"/>
                         </LinearLayout>
 
@@ -596,7 +596,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
-                                    android:text="0"
+                                    android:text=""
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
 
@@ -616,7 +616,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
-                                    android:text="0"
+                                    android:text=""
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
 
@@ -637,7 +637,7 @@
                                 android:layout_height="match_parent"
                                 android:gravity="left"
                                 android:paddingLeft="5dip"
-                                android:text="0"
+                                android:text=""
                                 android:textColor="@color/blue"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -698,7 +698,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:paddingLeft="5dip"
-                        android:text="1200mhz"
+                        android:text=""
                         android:textColor="@color/blue"/>
                 </LinearLayout>
 
@@ -720,7 +720,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:paddingLeft="5dip"
-                        android:text="12"
+                        android:text=""
                         android:textColor="@color/blue"/>
                 </LinearLayout>
             </LinearLayout>
@@ -763,7 +763,7 @@
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:paddingLeft="5dip"
-                            android:text="GDDR5"
+                            android:text=""
                             android:textColor="@color/blue"/>
                     </LinearLayout>
 
@@ -785,7 +785,7 @@
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:paddingLeft="5dip"
-                            android:text="62.8674GB"
+                            android:text=""
                             android:textColor="@color/blue"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -856,7 +856,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:layout_weight="1"
-                        android:text="/boot"
+                        android:text=""
                         android:gravity="center"
                         android:textColor="@color/blue"/>
 
