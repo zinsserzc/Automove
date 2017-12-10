@@ -422,7 +422,7 @@ public class ServerUtil {
                 int used = 0;
                 int unUsed = 0;
 
-                if (n.getJobs() != null && n.getJobs().equals(""))//有作业
+                if (n.getJobs() != null && !n.getJobs().equals(""))//有作业
                 {
                     used = n.getJobs().split(",").length;
 

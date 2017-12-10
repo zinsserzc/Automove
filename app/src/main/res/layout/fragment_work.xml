@@ -1,13 +1,66 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dawn.impetus.automove.fragments.WorkFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.dawn.impetus.automove.fragments.WorkFragment"
+    android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.dawn.impetus.automove.ui.TitleView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="zuoye" />
+        android:layout_height="wrap_content"
+        app:myTitle="作业"
+        app:backIconIsVisible = "false"></com.dawn.impetus.automove.ui.TitleView>
 
-</FrameLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="JobID"
+            android:textSize="17sp"/>
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="User"
+            android:textSize="17sp"/>
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Nodes"
+            android:textSize="17sp"/>
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cores"
+            android:textSize="17sp"/>
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Time"
+            android:textSize="17sp"/>
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="State"
+            android:textSize="17sp"/>
+
+    </LinearLayout>
+    <ListView
+        android:id="@+id/jobListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+
+</LinearLayout>
