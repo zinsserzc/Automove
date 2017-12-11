@@ -5,6 +5,8 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -50,6 +52,8 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
     private static final float WARNING_CPU_USAGE = 0.8f;
 
     private final long REFRESHTIME = 10*1000;
+
+    private View rootView;
 
     private ImageView iconSearch;
 
@@ -151,15 +155,26 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
     //是否第一次加载
     private boolean isFirst = true;
 
+    private Handler overallHandler;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = View.inflate(OverallFragment.this.getActivity(),R.layout.fragment_overall,null);
-        initView(view);
-        init();
-        // Inflate the layout for this fragment
-        return view;
+        if(rootView == null) {
+            rootView = View.inflate(OverallFragment.this.getActivity(), R.layout.fragment_overall, null);
+            initView(rootView);
+            init();
+            // Inflate the layout for this fragment
+        }
+
+        //用来避免fragment重复创建问题
+        ViewGroup parent = (ViewGroup) rootView.getParent();
+        if (parent != null) {
+            parent.removeView(rootView);
+        }
+
+        return rootView;
 
     }
 
@@ -169,8 +184,42 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
             startUpdate();
         }
 
+        overallHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg){
+                super.handleMessage(msg);
+                setData();
+                changeState();
+                drawChart();
+            }
+        };
+
         //初始百度语音
         voice = new VoiceUtil(this.getActivity());
+
+        Runnable updateTask = new Runnable() {
+            @Override
+            public void run() {
+                while(isRunning){
+                    try {
+                        getData();
+                        overallHandler.sendMessage(new Message());
+//                        getActivity().runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//
+//                            }
+//                        });
+                        Thread.currentThread().sleep(REFRESHTIME);
+                    }catch (Exception e){
+                        Toast.makeText(getActivity(),"网络连接中断！",Toast.LENGTH_SHORT).show();
+                    }
+                }
+                //可以新建线程
+                isNewRunnable = true;
+            }
+        };
+        ThreadManager.THREAD_POOL_EXECUTOR.execute(updateTask);
 
     }
 
@@ -204,49 +253,48 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
 
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        if(!isFirst){
-            startUpdate();
-        }
-        isFirst = false;
-        isRunning = true;
-        Runnable updateTask = new Runnable() {
-            @Override
-            public void run() {
-                while(isRunning){
-                    try {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setText();
-                                //状态图标显示
-                                changeState();
-                                drawChart();
-                            }
-                        });
-                        Thread.currentThread().sleep(60000);
-                    }catch (Exception e){
-                        Toast.makeText(getActivity(),"网络连接中断！",Toast.LENGTH_SHORT).show();
-                    }
-                }
-                //可以新建线程
-                isNewRunnable = true;
-            }
-        };
-        if(isNewRunnable) {
-            //阻止新建线程
-            isNewRunnable = false;
-            ThreadManager.THREAD_POOL_EXECUTOR.execute(updateTask);
-        }
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        isRunning = false;
-    }
+//    @Override
+//    public void onResume(){
+//        super.onResume();
+//        if(!isFirst){
+//            startUpdate();
+//        }
+//        isFirst = false;
+//        isRunning = true;
+//        Runnable updateTask = new Runnable() {
+//            @Override
+//            public void run() {
+//                while(isRunning){
+//                    try {
+//                        getData();
+//                        overallHandler.sendMessage(new Message());
+////                        getActivity().runOnUiThread(new Runnable() {
+////                            @Override
+////                            public void run() {
+////
+////                            }
+////                        });
+//                        Thread.currentThread().sleep(REFRESHTIME);
+//                    }catch (Exception e){
+//                        Toast.makeText(getActivity(),"网络连接中断！",Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//                //可以新建线程
+//                isNewRunnable = true;
+//            }
+//        };
+//        if(isNewRunnable) {
+//            //阻止新建线程
+//            isNewRunnable = false;
+//            ThreadManager.THREAD_POOL_EXECUTOR.execute(updateTask);
+//        }
+//    }
+//
+//    @Override
+//    public void onPause(){
+//        super.onPause();
+//        isRunning = false;
+//    }
 
     private void setText(){
         getData();
@@ -571,6 +619,6 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
     public void onDestroy() {
         super.onDestroy();
         voice.destroy();
-
+        isRunning = false;
     }
 }

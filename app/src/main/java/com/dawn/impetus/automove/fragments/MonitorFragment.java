@@ -2,7 +2,10 @@ package com.dawn.impetus.automove.fragments;
 
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +26,8 @@ import java.util.Map;
  */
 public class MonitorFragment extends Fragment {
 
+    private static final int REFRESHTIME = 60 * 1000;
+
     private TextView nodeFreeTv;
     private TextView nodeExclusiveTv;
     private TextView nodeBusyTv;
@@ -32,14 +37,26 @@ public class MonitorFragment extends Fragment {
     private ListView monitorLv;
     private MonitorListAdapter mAdapter;
 
+    private View rootView;
+    private Handler monitorHandler;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = View.inflate(MonitorFragment.this.getActivity(),R.layout.fragment_monitor,null);
-        initView(view);
-        init();
-        return view;
+        if(rootView == null) {
+            rootView = View.inflate(MonitorFragment.this.getActivity(), R.layout.fragment_monitor, null);
+            initView(rootView);
+            init();
+            // Inflate the layout for this fragment
+        }
+
+        //用来避免fragment重复创建问题
+        ViewGroup parent = (ViewGroup) rootView.getParent();
+        if (parent != null) {
+            parent.removeView(rootView);
+        }
+
+        return rootView;
     }
 
     private void initView(View view) {
@@ -50,26 +67,47 @@ public class MonitorFragment extends Fragment {
         monitorLv = (ListView) view.findViewById(R.id.lv_monitor);
     }
     private void setText(Map<String, String> map){
-        nodeFreeTv.setText(map.get("free").trim());
+        nodeFreeTv.setText(map.get("free"));
         nodeBusyTv.setText(map.get("busy").trim());
         nodeExclusiveTv.setText(map.get("exclusive").trim());
         nodeDownTv.setText(map.get("down").trim());
     }
 
     private void init() {
+
+
+        monitorHandler = new Handler(){
+          @Override
+          public void handleMessage(Message msg){
+              super.handleMessage(msg);
+              nodeList = ServerUtil.getNodeInfos();
+              Map<String, String> map = ServerUtil.getNodeStateNum();
+              setText(map);
+              if(mAdapter == null){
+                  mAdapter = new MonitorListAdapter();
+                  monitorLv.setAdapter(mAdapter);
+              }else {
+                  mAdapter.notifyDataSetChanged();
+              }
+          }
+        };
         Runnable updateUITask = new Runnable() {
             @Override
             public void run() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        nodeList = ServerUtil.getNodeInfos();
-                        Map<String, String> map = ServerUtil.getNodeStateNum();
-                        mAdapter = new MonitorListAdapter();
-                        monitorLv.setAdapter(mAdapter);
-                        setText(map);
+                while(true) {
+                    monitorHandler.sendMessage(new Message());
+                    try {
+                        Thread.currentThread().sleep(REFRESHTIME);
+                    }catch (Exception e){
+
                     }
-                });
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                    }
+//                });
+                }
             }
         };
 

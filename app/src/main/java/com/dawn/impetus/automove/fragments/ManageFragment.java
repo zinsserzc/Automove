@@ -3,6 +3,8 @@ package com.dawn.impetus.automove.fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import com.dawn.impetus.automove.threadpool.ThreadManager;
 import com.dawn.impetus.automove.utils.ServerUtil;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +33,8 @@ public class ManageFragment extends Fragment {
 
     //用户总数
     private TextView userCountTv;
+    private View rootView;
+    private Handler handler;
 
 
 
@@ -37,11 +42,20 @@ public class ManageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = View.inflate(ManageFragment.this.getActivity(),R.layout.fragment_manage,null);
-        initView(view);
-        init();
+        if(rootView == null) {
+            rootView = View.inflate(ManageFragment.this.getActivity(), R.layout.fragment_manage, null);
+            initView(rootView);
+            init();
+            // Inflate the layout for this fragment
+        }
 
-        return view;
+        //用来避免fragment重复创建问题
+        ViewGroup parent = (ViewGroup) rootView.getParent();
+        if (parent != null) {
+            parent.removeView(rootView);
+        }
+
+        return rootView;
     }
 
     private void initView(View view) {
@@ -50,19 +64,26 @@ public class ManageFragment extends Fragment {
     }
 
     private void init() {
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg){
+                super.handleMessage(msg);
+                userList = ServerUtil.getUserList();
+                userCountTv.setText(String.valueOf(userList.size()));
+                userLv.setAdapter(mAdapter);
+                if(mAdapter == null) {
+                    mAdapter = new ManageListAdapter();
+                    userLv.setAdapter(mAdapter);
+                }else {
+                    mAdapter.notifyDataSetChanged();
+                }
 
+            }
+        };
         Runnable updateUITask = new Runnable() {
             @Override
             public void run() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        userList = ServerUtil.getUserList();
-                        userCountTv.setText(String.valueOf(userList.size()));
-                        mAdapter = new ManageListAdapter();
-                        userLv.setAdapter(mAdapter);
-                    }
-                });
+                handler.sendMessage(new Message());
             }
         };
 
