@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dawn.impetus.automove.R;
 import com.dawn.impetus.automove.entities.Node;
@@ -26,7 +27,7 @@ import java.util.Map;
  */
 public class MonitorFragment extends Fragment {
 
-    private static final int REFRESHTIME = 60 * 1000;
+    private static final int REFRESHTIME = 30 * 1000;
 
     private TextView nodeFreeTv;
     private TextView nodeExclusiveTv;
@@ -89,6 +90,7 @@ public class MonitorFragment extends Fragment {
               }else {
                   mAdapter.notifyDataSetChanged();
               }
+              Toast.makeText(MonitorFragment.this.getActivity(),"监控已更新",Toast.LENGTH_SHORT).show();
           }
         };
         Runnable updateUITask = new Runnable() {
@@ -156,7 +158,10 @@ public class MonitorFragment extends Fragment {
                     holder.nodeNameTv.setTextColor(getResources().getColor(R.color.red));
                 }else if(node.getState().equals("free")){
                     holder.nodeNameTv.setTextColor(getResources().getColor(R.color.green));
-                }else{
+                }else if(node.getState().equals("down")){
+                    holder.nodeNameTv.setTextColor(getResources().getColor(R.color.orange));
+                }
+                else {
                     holder.nodeNameTv.setTextColor(getResources().getColor(R.color.blue));
                 }
                 if(node.getUsedCoreNum() > 0){

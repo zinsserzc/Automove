@@ -33,7 +33,7 @@ import java.util.List;
 public class WorkFragment extends Fragment {
 
     private View rootView;
-
+    private final int REFRESH_TIME=1000*30;
     private ListView jobListView;
     private JobAdapter jobAdapter;
     static List<Job> jobs;
@@ -42,7 +42,7 @@ public class WorkFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        
+
 
         if (rootView == null) {
             rootView = View.inflate(WorkFragment.this.getActivity(), R.layout.fragment_work, null);
@@ -92,15 +92,16 @@ public class WorkFragment extends Fragment {
 
                         String jobID = ((TextView) view.findViewById(R.id.jobName)).getText().toString();
 
-//                        if(ServerUtil.deleteJob(jobID))
-//                        {
-                        jobs.remove(position);
-                        jobAdapter.notifyDataSetChanged();
+                        if(ServerUtil.deleteJob(jobID))
+                        {
+                            //删除并更新作业
+                            jobs.remove(position);
+                            jobsRefreshHandler.sendMessage(new Message());
                         Toast.makeText(WorkFragment.this.getActivity(), "删除job成功", Toast.LENGTH_SHORT).show();
-//                        }else {
-//
-//                            Toast.makeText(WorkFragment.this.getActivity(),"删除job失败",Toast.LENGTH_SHORT).show();
-//                        }
+                        }else {
+
+                            Toast.makeText(WorkFragment.this.getActivity(),"删除job失败",Toast.LENGTH_SHORT).show();
+                        }
 
                     }
 
@@ -128,7 +129,7 @@ public class WorkFragment extends Fragment {
         jobAdapter = new JobAdapter();
         jobListView.setAdapter(jobAdapter);
 
-        if (jobs.size() == 0) {
+        if (jobs==null||jobs.size() == 0) {
             Toast.makeText(WorkFragment.this.getActivity(), "作业获取中", Toast.LENGTH_LONG).show();
         }
 
@@ -143,7 +144,7 @@ public class WorkFragment extends Fragment {
                     Message msg = new Message();
                     jobsRefreshHandler.sendMessage(msg);
                     try {
-                        Thread.sleep(1000 * 60);
+                        Thread.sleep(REFRESH_TIME);
                     } catch (Exception e) {
 
                     }

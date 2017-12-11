@@ -25,9 +25,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public  static final String TAG = LoginActivity.class.getName();
 
-    private EditText userEdit, pswEdit;
+    private EditText addressEdit,portEdit,userEdit, pswEdit;
     private Button loginBtn;
-    private String userName, passWord;
+    private String address,port,userName, passWord;
     private Handler loginHandler;
 
     @Override
@@ -50,6 +50,8 @@ public class LoginActivity extends AppCompatActivity {
     private void init() {
 
         loginBtn = (Button) findViewById(R.id.login_btnLogin);
+        addressEdit=(EditText)findViewById(R.id.login_address);
+        portEdit=(EditText)findViewById(R.id.login_port);
         userEdit = (EditText) findViewById(R.id.login_edtId);
         pswEdit = (EditText) findViewById(R.id.login_edtPwd);
     }
@@ -68,6 +70,46 @@ public class LoginActivity extends AppCompatActivity {
      * 设置文本框变化监听
      */
     private void setEditorChangeListener() {
+
+        //地址框
+        addressEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                address = charSequence.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        //端口框
+        portEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                port = charSequence.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+
+
         //用户名框
         userEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -121,6 +163,8 @@ public class LoginActivity extends AppCompatActivity {
                     saveUser();
                     loginBtn.setEnabled(false);
                     loginBtn.setText("登录中...");
+                    addressEdit.setEnabled(false);
+                    portEdit.setEnabled(false);
                     userEdit.setEnabled(false);
                     pswEdit.setEnabled(false);
                     login();
@@ -155,6 +199,8 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
                         loginBtn.setEnabled(true);
                         loginBtn.setText("登录");
+                        addressEdit.setEnabled(true);
+                        portEdit.setEnabled(true);
                         userEdit.setEnabled(true);
                         pswEdit.setEnabled(true);
                         break;
@@ -190,6 +236,16 @@ public class LoginActivity extends AppCompatActivity {
      */
     private boolean isValid() {
 
+        if (address == null || address.equals("")) {
+            Toast.makeText(LoginActivity.this, "请输入地址", Toast.LENGTH_SHORT).show();
+            return false;
+
+        }else
+        if (port == null || port.equals("")) {
+            Toast.makeText(LoginActivity.this, "请输入端口号", Toast.LENGTH_SHORT).show();
+            return false;
+
+        }else
         if (userName == null || userName.equals("")) {
             Toast.makeText(LoginActivity.this, "请输入账号", Toast.LENGTH_SHORT).show();
             return false;
@@ -208,8 +264,12 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void saveUser() {
 
+        address=addressEdit.getText().toString();
+        port=portEdit.getText().toString();
         userName = userEdit.getText().toString();
         passWord = pswEdit.getText().toString();
+        SPUtil.put(getApplicationContext(), "address", address);
+        SPUtil.put(getApplicationContext(), "port", port);
         SPUtil.put(getApplicationContext(), "userName", userName);
         SPUtil.put(getApplicationContext(), "passWord", passWord);
 
@@ -219,7 +279,15 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        //设置初始用户名
+        //设置初始值
+        address = SPUtil.get(getApplicationContext(), "address", "").toString();
+        if (address != null || !address.equals(""))
+            addressEdit.setText(address);
+
+        port = SPUtil.get(getApplicationContext(), "port", "").toString();
+        if (port != null || !port.equals(""))
+            portEdit.setText(port);
+
         userName = SPUtil.get(getApplicationContext(), "userName", "").toString();
         if (userName != null || !userName.equals(""))
             userEdit.setText(userName);

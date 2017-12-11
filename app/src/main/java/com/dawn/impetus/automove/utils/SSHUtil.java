@@ -26,8 +26,8 @@ public class SSHUtil {
     private String charset = "UTF-8"; // 设置编码格式
     private String username; // 用户名
     private String password; // 登录密码
-    private String host = "116.236.169.100"; // 主机IP
-    private int port = 22; //端口
+    private String host; // 主机IP
+    private int port; //端口
     private JSch jsch = new JSch();//连接ssh
     private Session session;
 
@@ -56,6 +56,8 @@ public class SSHUtil {
 
         //取出用户名和密码并设置,生命周期是全局的
         Context context = ContextApplication.getAppContext();
+        host=SPUtil.get(context,"address","").toString();
+        port=Integer.valueOf(SPUtil.get(context,"port","").toString());
         username = SPUtil.get(context, "userName", "").toString();
         password = SPUtil.get(context, "passWord", "").toString();
         Log.i(TAG, "user is" + username + " psw is" + password);

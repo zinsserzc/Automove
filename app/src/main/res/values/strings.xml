@@ -60,6 +60,8 @@
     <string name="node_exclusive">负载节点：</string>
 
     <!--登录-->
+    <string name="addresstxthint">地址默认:116.236.169.100</string>
+    <string name="porttxthint">端口默认:22</string>
 	<string name="idtxthint">用户名</string>
     <string name="pwdtxthint">密码</string>
     <string name="loginbtntext">登录</string>
