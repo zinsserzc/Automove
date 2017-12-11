@@ -1,8 +1,10 @@
 package com.dawn.impetus.automove.fragments;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,6 @@ import com.dawn.impetus.automove.threadpool.ThreadManager;
 import com.dawn.impetus.automove.utils.ServerUtil;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +40,7 @@ public class ManageFragment extends Fragment {
         View view = View.inflate(ManageFragment.this.getActivity(),R.layout.fragment_manage,null);
         initView(view);
         init();
+
         return view;
     }
 
