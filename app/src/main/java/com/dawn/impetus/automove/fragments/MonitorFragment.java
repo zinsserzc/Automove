@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class MonitorFragment extends Fragment {
 
-    private static final int REFRESHTIME = 30 * 1000;
+    private static final int REFRESHTIME = 50 * 1000;
 
     private TextView nodeFreeTv;
     private TextView nodeExclusiveTv;

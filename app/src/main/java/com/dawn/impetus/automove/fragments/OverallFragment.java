@@ -51,7 +51,7 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
     private static final float WARNING_TEMP = 80;
     private static final float WARNING_CPU_USAGE = 0.8f;
 
-    private final long REFRESHTIME = 10*1000;
+    private final long REFRESHTIME = 70*1000;
 
     private View rootView;
 

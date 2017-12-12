@@ -33,7 +33,7 @@ import java.util.List;
 public class WorkFragment extends Fragment {
 
     private View rootView;
-    private final int REFRESH_TIME=1000*30;
+    private final int REFRESH_TIME=1000*60;
     private ListView jobListView;
     private JobAdapter jobAdapter;
     static List<Job> jobs;
