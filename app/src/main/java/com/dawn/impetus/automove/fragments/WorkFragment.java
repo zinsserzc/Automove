@@ -82,46 +82,73 @@ public class WorkFragment extends Fragment {
                                            final int position, long id) {
                 // TODO Auto-generated method stub
                 // When clicked, show a toast with the TextView text
-                AlertDialog.Builder builder = new AlertDialog.Builder(WorkFragment.this.getActivity());
-                builder.setMessage("确认删除?");
-
-                builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        String jobID = ((TextView) view.findViewById(R.id.jobName)).getText().toString();
-
-                        if(ServerUtil.deleteJob(jobID))
-                        {
-                            //删除并更新作业
-                            jobs.remove(position);
-                            jobsRefreshHandler.sendMessage(new Message());
-                        Toast.makeText(WorkFragment.this.getActivity(), "删除job成功", Toast.LENGTH_SHORT).show();
-                        }else {
-
-                            Toast.makeText(WorkFragment.this.getActivity(),"删除job失败",Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-
-                });
-                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-
-
-                });
-                builder.create().show();
+                showDeleteJobDialog(view,position);
                 return false;
             }
         });
 
     }
 
+    /**
+     * 根据作业id返回list中的位置,未找到则返回0
+     * @return
+     */
+    public final int getPositionByJobName(String JobName){
+
+        int position=-1;
+        if(jobs!=null&&jobs.size()>0) {
+            for (Job j : jobs) {
+            if(j.getJobName().equals(JobName))
+            {
+                position=jobs.indexOf(j);
+            }
+            }
+        }
+        return position==-1?-1:position;
+    }
+
+
+
+    /**
+     * 删除作业对话框
+     */
+    public void showDeleteJobDialog(View view,final int position){
+        AlertDialog.Builder builder = new AlertDialog.Builder(WorkFragment.this.getActivity());
+        final String jobID = ((TextView) view.findViewById(R.id.jobName)).getText().toString();
+        builder.setMessage("确认删除作业"+jobID+"?");
+
+        builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+                if(ServerUtil.deleteJob(jobID))
+                {
+                    //删除并更新作业
+                    jobs.remove(position);
+                    jobsRefreshHandler.sendMessage(new Message());
+                    Toast.makeText(WorkFragment.this.getActivity(), "删除job成功", Toast.LENGTH_SHORT).show();
+                }else {
+
+                    Toast.makeText(WorkFragment.this.getActivity(),"删除job失败",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+
+
+        });
+        builder.create().show();
+
+    }
     private void init() {
 
         //初始化listview
