@@ -519,6 +519,25 @@ public class ServerUtil {
         }
     }
 
+    /**
+     * 返回作业详情
+     * @param jobName
+     * @return
+     */
+    public static String getJobDetail(String jobName) {
+
+        String res="";
+        try {
+            res=ssh.execCmd("checkjobs "+jobName);
+        }catch (Exception e)
+        {
+            Log.e(TAG,e.getLocalizedMessage());
+        }finally {
+            return  res;
+        }
+    }
+
+
 /////////////////////////////////////////用户管理//////////////////////////////////////////
 
 

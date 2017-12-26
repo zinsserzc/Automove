@@ -107,7 +107,35 @@ public class WorkFragment extends Fragment {
         return position==-1?-1:position;
     }
 
+    /**
+     * 展示作业详情
+     * @param jobName 作业id 用int防止识别错误
+     */
+    public void showJobDetail(int jobName){
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(WorkFragment.this.getActivity());
+        builder.setTitle("作业"+jobName+"详情");
+
+        String content = "";
+        content = ServerUtil.getJobDetail(String.valueOf(jobName));
+
+        if(content.equals("")) {
+            content="无法获取作业详情！";
+        }
+
+        builder.setMessage(content);
+
+
+        builder.setPositiveButton("知道了",new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+    });
+
+        builder.create().show();
+    }
 
     /**
      * 删除作业对话框
