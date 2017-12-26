@@ -76,7 +76,6 @@ public class MonitorFragment extends Fragment {
 
     private void init() {
 
-
         monitorHandler = new Handler(){
           @Override
           public void handleMessage(Message msg){

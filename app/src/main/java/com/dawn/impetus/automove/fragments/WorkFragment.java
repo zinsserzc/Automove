@@ -36,7 +36,7 @@ public class WorkFragment extends Fragment {
     private final int REFRESH_TIME=1000*60;
     private ListView jobListView;
     private JobAdapter jobAdapter;
-    static List<Job> jobs;
+    static List<Job> jobs=new ArrayList<>();
     private Handler jobsRefreshHandler;
 
     @Override
@@ -57,7 +57,7 @@ public class WorkFragment extends Fragment {
                 public void handleMessage(Message msg) {
                     super.handleMessage(msg);
                     Toast.makeText(WorkFragment.this.getActivity(), "作业已更新", Toast.LENGTH_SHORT).show();
-                    if (jobs.size() == 0) {
+                    if (jobs==null||jobs.size() == 0) {
                         Toast.makeText(WorkFragment.this.getActivity(), "暂无作业", Toast.LENGTH_SHORT).show();
                     }
                     jobAdapter.notifyDataSetChanged();
