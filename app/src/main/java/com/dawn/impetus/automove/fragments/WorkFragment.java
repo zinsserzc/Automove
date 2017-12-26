@@ -76,6 +76,7 @@ public class WorkFragment extends Fragment {
     }
 
     private void setListItemDeleMethod() {
+        //长按删除事件
         jobListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view,
@@ -87,24 +88,18 @@ public class WorkFragment extends Fragment {
             }
         });
 
-    }
+        //设置单击弹出作业详情事件
+        jobListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
-    /**
-     * 根据作业id返回list中的位置,未找到则返回0
-     * @return
-     */
-    public final int getPositionByJobName(String JobName){
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view,
+            final int position, long id) {
+                int jobName = Integer.valueOf(jobs.get(position).getJobName());
+                showJobDetail(jobName);
+            }
 
-        int position=-1;
-        if(jobs!=null&&jobs.size()>0) {
-            for (Job j : jobs) {
-            if(j.getJobName().equals(JobName))
-            {
-                position=jobs.indexOf(j);
-            }
-            }
-        }
-        return position==-1?-1:position;
+        });
+
     }
 
     /**
@@ -132,10 +127,35 @@ public class WorkFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
 
             }
-    });
+        });
 
         builder.create().show();
     }
+
+
+
+
+
+
+    /**
+     * 根据作业id返回list中的位置,未找到则返回-1
+     * @return
+     */
+    public final int getPositionByJobName(String JobName){
+
+        int position=-1;
+        if(jobs!=null&&jobs.size()>0) {
+            for (Job j : jobs) {
+            if(j.getJobName().equals(JobName))
+            {
+                position=jobs.indexOf(j);
+            }
+            }
+        }
+        return position==-1?-1:position;
+    }
+
+
 
     /**
      * 删除作业对话框
