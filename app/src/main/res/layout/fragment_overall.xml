@@ -318,6 +318,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingLeft="5dip"
+                    android:textSize="@dimen/textSize"
                     android:text="@string/host"/>
                 <TextView
                     android:id="@+id/tv_host"
@@ -326,6 +327,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="5dip"
                     android:text=""
+                    android:textSize="@dimen/textSize"
                     android:textColor="@color/blue"/>
             </LinearLayout>
 
@@ -355,6 +357,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:paddingLeft="5dip"
+                            android:textSize="@dimen/textSize"
                             android:text="@string/node"/>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -366,8 +369,8 @@
                                 android:layout_weight="1"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="20dip"
-                                    android:layout_height="20dip"
+                                    android:layout_width="15dip"
+                                    android:layout_height="15dip"
                                     android:src="@drawable/icon_up_normal"/>
                                 <TextView
                                     android:id="@+id/tv_node1"
@@ -376,6 +379,7 @@
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
                                     android:text=""
+                                    android:textSize="@dimen/textSize"
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
                             <LinearLayout
@@ -384,8 +388,8 @@
                                 android:layout_weight="1"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="20dip"
-                                    android:layout_height="20dip"
+                                    android:layout_width="15dip"
+                                    android:layout_height="15dip"
                                     android:src="@drawable/icon_up_warning"/>
                                 <TextView
                                     android:id="@+id/tv_node2"
@@ -393,6 +397,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
+                                    android:textSize="@dimen/textSize"
                                     android:text=""
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
@@ -402,8 +407,8 @@
                                 android:layout_weight="1"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="20dip"
-                                    android:layout_height="20dip"
+                                    android:layout_width="15dip"
+                                    android:layout_height="15dip"
                                     android:src="@drawable/icon_up_error"
                                     android:rotation="180"/>
                                 <TextView
@@ -411,6 +416,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:gravity="left"
+                                    android:textSize="@dimen/textSize"
                                     android:paddingLeft="5dip"
                                     android:text=""
                                     android:textColor="@color/blue"/>
@@ -428,6 +434,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:paddingLeft="5dip"
+                            android:textSize="@dimen/textSize"
                             android:text="@string/GPU"/>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -439,14 +446,15 @@
                                 android:layout_weight="1"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="20dip"
-                                    android:layout_height="20dip"
+                                    android:layout_width="15dip"
+                                    android:layout_height="15dip"
                                     android:src="@drawable/icon_up_normal"/>
                                 <TextView
                                     android:id="@+id/tv_GPU1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:gravity="left"
+                                    android:textSize="@dimen/textSize"
                                     android:paddingLeft="5dip"
                                     android:text=""
                                     android:textColor="@color/blue"/>
@@ -457,8 +465,8 @@
                                 android:layout_weight="1"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="20dip"
-                                    android:layout_height="20dip"
+                                    android:layout_width="15dip"
+                                    android:layout_height="15dip"
                                     android:src="@drawable/icon_up_warning"/>
                                 <TextView
                                     android:id="@+id/tv_GPU2"
@@ -466,6 +474,7 @@
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
+                                    android:textSize="@dimen/textSize"
                                     android:text=""
                                     android:textColor="@color/blue"/>
                             </LinearLayout>
@@ -475,12 +484,13 @@
                                 android:layout_weight="1"
                                 android:orientation="horizontal">
                                 <ImageView
-                                    android:layout_width="20dip"
-                                    android:layout_height="20dip"
+                                    android:layout_width="15dip"
+                                    android:layout_height="15dip"
                                     android:src="@drawable/icon_up_error"
                                     android:rotation="180"/>
                                 <TextView
                                     android:id="@+id/tv_GPU3"
+                                    android:textSize="@dimen/textSize"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:gravity="left"
@@ -501,6 +511,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:paddingLeft="5dip"
+                            android:textSize="@dimen/textSize"
                             android:text="@string/switchboard"/>
                         <TextView
                             android:id="@+id/tv_changer"
@@ -509,6 +520,7 @@
                             android:gravity="left"
                             android:paddingLeft="5dip"
                             android:text=""
+                            android:textSize="@dimen/textSize"
                             android:textColor="@color/blue"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -526,6 +538,7 @@
                         android:layout_height="match_parent"
                         android:background="@color/divide_line"
                         android:layout_marginTop="10dip"
+                        android:textSize="@dimen/textSize"
                         android:layout_marginBottom="10dip"/>
 
                     <LinearLayout
@@ -541,11 +554,13 @@
                             android:orientation="horizontal">
                             <TextView
                                 android:layout_width="wrap_content"
+                                android:textSize="@dimen/textSize"
                                 android:layout_height="match_parent"
                                 android:paddingLeft="5dip"
                                 android:text="@string/UPS"/>
                             <TextView
                                 android:layout_width="wrap_content"
+                                android:textSize="@dimen/textSize"
                                 android:layout_height="match_parent"
                                 android:gravity="left"
                                 android:paddingLeft="5dip"
@@ -562,12 +577,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
+                                android:textSize="@dimen/textSize"
                                 android:paddingLeft="5dip"
                                 android:text="@string/storage"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:gravity="left"
+                                android:textSize="@dimen/textSize"
                                 android:paddingLeft="5dip"
                                 android:text=""
                                 android:textColor="@color/blue"/>
@@ -589,10 +606,12 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
+                                    android:textSize="@dimen/textSize"
                                     android:paddingLeft="5dip"
                                     android:text="@string/work"/>
                                 <TextView
                                     android:layout_width="wrap_content"
+                                    android:textSize="@dimen/textSize"
                                     android:layout_height="match_parent"
                                     android:gravity="left"
                                     android:paddingLeft="5dip"
@@ -610,11 +629,13 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:paddingLeft="5dip"
+                                    android:textSize="@dimen/textSize"
                                     android:text="@string/running"/>
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:gravity="left"
+                                    android:textSize="@dimen/textSize"
                                     android:paddingLeft="5dip"
                                     android:text=""
                                     android:textColor="@color/blue"/>
@@ -630,12 +651,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
+                                android:textSize="@dimen/textSize"
                                 android:paddingLeft="5dip"
                                 android:text="@string/waiting"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:gravity="left"
+                                android:textSize="@dimen/textSize"
                                 android:paddingLeft="5dip"
                                 android:text=""
                                 android:textColor="@color/blue"/>
@@ -668,11 +691,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:paddingLeft="5dip"
+                        android:textSize="@dimen/textSize"
                         android:text="@string/CPU_name"
                         android:gravity="center"/>
                     <TextView
                         android:id="@+id/tv_GPU_type"
                         android:layout_width="wrap_content"
+                        android:textSize="@dimen/textSize"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:paddingLeft="5dip"
@@ -689,6 +714,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:textSize="@dimen/textSize"
                         android:paddingLeft="5dip"
                         android:text="@string/dominant_frequency"
                         android:gravity="center"/>
@@ -697,6 +723,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
+                        android:textSize="@dimen/textSize"
                         android:paddingLeft="5dip"
                         android:text=""
                         android:textColor="@color/blue"/>
@@ -713,10 +740,12 @@
                         android:layout_height="match_parent"
                         android:paddingLeft="5dip"
                         android:text="@string/core_count"
+                        android:textSize="@dimen/textSize"
                         android:gravity="center"/>
                     <TextView
                         android:id="@+id/tv_core_count"
                         android:layout_width="wrap_content"
+                        android:textSize="@dimen/textSize"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:paddingLeft="5dip"
@@ -736,6 +765,7 @@
                 <TextView
                     android:layout_width="2dip"
                     android:layout_height="match_parent"
+                    android:textSize="@dimen/textSize"
                     android:background="@color/divide_line"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"/>
@@ -753,6 +783,7 @@
                         android:orientation="horizontal">
                         <TextView
                             android:layout_width="wrap_content"
+                            android:textSize="@dimen/textSize"
                             android:layout_height="match_parent"
                             android:paddingLeft="5dip"
                             android:text="@string/memory_type"
@@ -760,6 +791,7 @@
                         <TextView
                             android:id="@+id/tv_memory_type"
                             android:layout_width="wrap_content"
+                            android:textSize="@dimen/textSize"
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:paddingLeft="5dip"
@@ -776,6 +808,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:textSize="@dimen/textSize"
                             android:paddingLeft="5dip"
                             android:text="@string/size"
                             android:gravity="center"/>
@@ -783,6 +816,7 @@
                             android:id="@+id/tv_size"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:textSize="@dimen/textSize"
                             android:gravity="center"
                             android:paddingLeft="5dip"
                             android:text=""
@@ -809,6 +843,7 @@
                 <TextView
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
+                    android:textSize="@dimen/textSize"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/hard_type"/>
@@ -818,6 +853,7 @@
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:textSize="@dimen/textSize"
                     android:gravity="center"
                     android:text=""
                     android:textColor="@color/blue"/>
@@ -840,6 +876,7 @@
                         android:layout_height="0dip"
                         android:layout_weight="1"
                         android:text="@string/Mount"
+                        android:textSize="@dimen/textSize"
                         android:gravity="center"/>
 
                     <TextView
@@ -847,6 +884,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:layout_weight="1"
+                        android:textSize="@dimen/textSize"
                         android:text=""
                         android:gravity="center"
                         android:textColor="@color/blue"/>
@@ -856,6 +894,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:layout_weight="1"
+                        android:textSize="@dimen/textSize"
                         android:text=""
                         android:gravity="center"
                         android:textColor="@color/blue"/>
@@ -865,6 +904,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:layout_weight="1"
+                        android:textSize="@dimen/textSize"
                         android:text=""
                         android:gravity="center"
                         android:textColor="@color/blue"/>
@@ -882,6 +922,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:layout_weight="1"
+                        android:textSize="@dimen/textSize"
                         android:text="@string/Size"
                         android:gravity="center"/>
 
@@ -890,6 +931,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:layout_weight="1"
+                        android:textSize="@dimen/textSize"
                         android:text=""
                         android:gravity="center"
                         android:textColor="@color/blue"/>
@@ -901,6 +943,7 @@
                         android:layout_weight="1"
                         android:text=""
                         android:gravity="center"
+                        android:textSize="@dimen/textSize"
                         android:textColor="@color/blue"/>
 
                     <TextView
@@ -908,6 +951,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
                         android:layout_weight="1"
+                        android:textSize="@dimen/textSize"
                         android:text=""
                         android:gravity="center"
                         android:textColor="@color/blue"/>
@@ -922,6 +966,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
+                        android:textSize="@dimen/textSize"
                         android:layout_weight="1"
                         android:text="@string/Used"
                         android:gravity="center"/>
@@ -930,6 +975,7 @@
                         android:id="@+id/tv_used1"
                         android:layout_width="match_parent"
                         android:layout_height="0dip"
+                        android:textSize="@dimen/textSize"
                         android:layout_weight="1"
                         android:text=""
                         android:gravity="center"
@@ -938,6 +984,7 @@
                     <TextView
                         android:id="@+id/tv_used2"
                         android:layout_width="match_parent"
+                        android:textSize="@dimen/textSize"
                         android:layout_height="0dip"
                         android:layout_weight="1"
                         android:text=""
@@ -950,6 +997,7 @@
                         android:layout_height="0dip"
                         android:layout_weight="1"
                         android:text=""
+                        android:textSize="@dimen/textSize"
                         android:gravity="center"
                         android:textColor="@color/blue"/>
                 </LinearLayout>
@@ -964,6 +1012,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="0dip"
                         android:layout_weight="1"
+                        android:textSize="@dimen/textSize"
                         android:text="@string/usage_percent"/>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -975,18 +1024,21 @@
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:textSize="@dimen/textSize"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
                             android:id="@+id/img_per1_2"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
+                            android:textSize="@dimen/textSize"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
                             android:id="@+id/img_per1_3"
                             android:layout_width="0dip"
+                            android:textSize="@dimen/textSize"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
@@ -995,6 +1047,7 @@
                             android:id="@+id/img_per1_4"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
+                            android:textSize="@dimen/textSize"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
@@ -1002,11 +1055,13 @@
                             android:id="@+id/img_per1_5"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
+                            android:textSize="@dimen/textSize"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
                             android:id="@+id/tv_per1"
+                            android:textSize="@dimen/textSize"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -1024,6 +1079,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
+                            android:textSize="@dimen/textSize"
                             android:layout_margin="2dip"/>
                         <TextView
                             android:id="@+id/img_per2_2"
@@ -1031,16 +1087,19 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
+                            android:textSize="@dimen/textSize"
                             android:layout_margin="2dip"/>
                         <TextView
                             android:id="@+id/img_per2_3"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
+                            android:textSize="@dimen/textSize"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
                             android:id="@+id/img_per2_4"
+                            android:textSize="@dimen/textSize"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -1052,11 +1111,13 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
+                            android:textSize="@dimen/textSize"
                             android:layout_margin="2dip"/>
                         <TextView
                             android:id="@+id/tv_per2"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
+                            android:textSize="@dimen/textSize"
                             android:layout_weight="1"
                             android:text=""/>
                     </LinearLayout>
@@ -1071,6 +1132,7 @@
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:textSize="@dimen/textSize"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
@@ -1079,23 +1141,27 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
+                            android:textSize="@dimen/textSize"
                             android:layout_margin="2dip"/>
                         <TextView
                             android:id="@+id/img_per3_3"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:textSize="@dimen/textSize"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
                             android:id="@+id/img_per3_4"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
+                            android:textSize="@dimen/textSize"
                             android:layout_weight="1"
                             android:background="@color/sky_blue"
                             android:layout_margin="2dip"/>
                         <TextView
                             android:id="@+id/img_per3_5"
+                            android:textSize="@dimen/textSize"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -1104,6 +1170,7 @@
                         <TextView
                             android:id="@+id/tv_per3"
                             android:layout_width="0dip"
+                            android:textSize="@dimen/textSize"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:text=""/>
@@ -1131,6 +1198,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:textSize="@dimen/textSize"
                     android:text="@string/cpu_use"/>
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/piechart_cpu"
@@ -1149,12 +1217,14 @@
                     android:layout_width="2dip"
                     android:layout_height="match_parent"
                     android:background="@color/divide_line"
+                    android:textSize="@dimen/textSize"
                     android:layout_marginTop="10dip"
                     android:layout_marginBottom="10dip"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:textSize="@dimen/textSize"
                     android:text="@string/ram_use"/>
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/piechart_ram"

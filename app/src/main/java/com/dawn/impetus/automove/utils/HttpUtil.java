@@ -2,17 +2,22 @@ package com.dawn.impetus.automove.utils;
 
 import android.util.Log;
 
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -29,21 +34,9 @@ public class HttpUtil {
     public static HttpClient httpClient = new DefaultHttpClient();
 
     //发布服务器的基本地址
-    //public static final String BASE_URL = "http://123.56.207.237/UnionPay/";
-    //测试服务器的基本地址
-    public static final String TEST_BASE_URL =
-            //"http://open.companiontek.com/UnionPay/";
-           // "http://test.companiontek.com/UnionPay/";
-          //   "http://release.companiontek.com/UnionPay/";
-        "http://114.55.236.67:8015/UnionPay/";
+    public static final String BASE_URL = "http://vpn.zixuncr.com:5080/report/";
 
-    public static final String STATISTIC_URL =
-          //  "http://open.companiontek.com:8081/";
-           "http://release.companiontek.com:8081/";
 
-    public static final String INCOME_URL =
-         //   "http://open.companiontek.com:8080/";
-            "http://test.companiontek.com:8080/";
 
     public static String ENCODING = "UTF8";
 
@@ -119,6 +112,31 @@ public class HttpUtil {
         return task.get();
     }
 
+    public static synchronized String doPost(final String url, final JSONObject json)throws Exception{
+        FutureTask<String> task = new FutureTask<>(
+                new Callable<String>() {
+                    @Override
+                    public String call() throws Exception {
+                        DefaultHttpClient client = new DefaultHttpClient();
+                        HttpPost post = new HttpPost(url);
+                        String result = null;
+                        StringEntity s = new StringEntity(json.toString(), HTTP.UTF_8);
+                        s.setContentType("application/json;charset=utf-8");//发送json数据需要设置contentType
+                        post.setEntity(s);
+                        HttpResponse res = client.execute(post);
+                        if(res.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                            HttpEntity entity = res.getEntity();
+                            result = EntityUtils.toString(res.getEntity());// 返回json格式：
+                        }
+
+                        return result;
+                    }
+
+                });
+
+        new Thread(task).start();
+        return task.get();
+    }
 
     public static  String postSmsRequest(final String url, final Map<String, String> rawParams) throws Exception {
 
@@ -131,6 +149,7 @@ public class HttpUtil {
                         //httpClient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, 300);//socket 链接时间
                         httpClient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 5000);//链接超时
                         HttpPost post = new HttpPost(url);
+
                         // 如果传递参数个数比较多的话可以对传递的参数进行封装
                         List<NameValuePair> params =  new ArrayList<>();
                         for (String key : rawParams.keySet()) {
@@ -192,6 +211,7 @@ public class HttpUtil {
         new Thread(task).start();
         return task.get();
     }
+
 
 
 }

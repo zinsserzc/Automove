@@ -2,21 +2,26 @@ package com.dawn.impetus.automove.utils;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
+import com.dawn.impetus.automove.R;
+import com.dawn.impetus.automove.activity.HomeActivity;
+import com.dawn.impetus.automove.fragments.WorkFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -31,12 +36,25 @@ public class VoiceUtil implements EventListener{
     private String msgContent = "";
     private Activity activity;
 
+    private HashMap<String,String> map ;
+    private JSONObject json = new JSONObject();
+    private HomeActivity homeActivity;
+
     public VoiceUtil(Activity activity){
         this.activity = activity;
+        this.homeActivity = (HomeActivity)activity;
         //初始化百度语音manager
         initPermission();
         asr = EventManagerFactory.create(activity,"asr");
         asr.registerListener(this);
+        map = new HashMap<>();
+        try {
+            json.put("type", "wordcorrect");
+            json.put("modelid", "0");
+            json.put("from", "test");
+        }catch (Exception e){
+
+        }
     }
 
     /**
@@ -87,15 +105,24 @@ public class VoiceUtil implements EventListener{
 //        }
         if(name.equals(SpeechConstant.CALLBACK_EVENT_ASR_READY)){
             // 引擎就绪，可以说话，一般在收到此事件后通过UI通知用户可以说话了
-            showMessage("请开始你的表演");
+            showMessage("请开始说指令");
         }
 
         if(name.equals(SpeechConstant.CALLBACK_EVENT_ASR_FINISH)){
             // 识别结束
-            showMessage("请等待结果");
+            //showMessage("请等待结果");
             try{
                 JSONObject resultJson = new JSONObject(msgContent);
-                showMessage(resultJson.getString("best_result"));
+                String result = resultJson.getString("best_result");
+                //showMessage(resultJson.getString("best_result"));
+                json.put("value",result);
+                StringBuilder num = new StringBuilder();
+                for(int i = 0; i < result.length(); i++){
+                    if(result.charAt(i) <58 && result.charAt(i) > 47){
+                        num.append(result.charAt(i));
+                    }
+                }
+                handleMessage(num.toString());
             }catch (JSONException e){
                 showMessage("识别失败！");
             }
@@ -122,7 +149,7 @@ public class VoiceUtil implements EventListener{
         params.put(SpeechConstant.VAD,SpeechConstant.VAD_TOUCH);
         String json = null; //可以替换成自己的json
         json = new JSONObject(params).toString();
-        Toast.makeText(activity,"开始说话",Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity,"语音模块启动中",Toast.LENGTH_SHORT).show();
         asr.send(event, json, null, 0, 0);
     }
 
@@ -138,6 +165,69 @@ public class VoiceUtil implements EventListener{
     public void destroy(){
         cancel();
         asr = null;
+    }
+
+    private void handleMessage(String numS){
+        try {
+           // JSONObject result = new JSONObject(HttpUtil.postRequest(HttpUtil.BASE_URL, map));
+            Log.e("json",json.toString());
+            String result = HttpUtil.doPost(HttpUtil.BASE_URL, json);
+
+            Log.e("return voice",result);
+            //showMessage(result);
+            JSONObject jsonObject = new JSONObject(result);
+            String command = jsonObject.getString("return");
+            Log.e("command",command);
+            String[] returns = command.split(",");
+            String ans = returns[1];
+            Log.e("ans",ans);
+            if("\"总览\"".equals(ans)){
+                homeActivity.getTab().setCurrentTab(2);
+            }
+            if("\"监控\"".equals(ans)){
+                homeActivity.getTab().setCurrentTab(1);
+            }
+            if("\"作业\"".equals(ans)){
+                //Log.e("作业","in");
+                homeActivity.getTab().setCurrentTab(0);
+            }
+
+            if("\"杀死作业\"".equals(ans)){
+                //Log.e("作业","in");
+
+                homeActivity.getTab().setCurrentTab(0);
+                String tag = homeActivity.getTab().getCurrentTabTag();
+                Log.e("fragmentworktag",tag);
+                WorkFragment fragment = (WorkFragment)homeActivity.getSupportFragmentManager().findFragmentByTag(tag);
+                Log.e("fragmentwork",fragment.toString());
+                if(fragment.jobExist(numS)){
+                    fragment.showDeleteJobDialog(fragment.getPositionByJobName(numS),numS);
+                }else{
+                    showMessage("不存在该作业");
+                }
+            }
+
+            if("\"查看作业\"".equals(ans)){
+                //Log.e("作业","in");
+                homeActivity.getTab().setCurrentTab(0);
+                String tag = homeActivity.getTab().getCurrentTabTag();
+                Log.e("fragmentworktag",tag);
+                WorkFragment fragment = (WorkFragment)homeActivity.getSupportFragmentManager().findFragmentByTag(tag);
+                Log.e("fragmentwork",fragment.toString());
+                if(fragment.jobExist(numS)){
+                    fragment.showJobDetail(Integer.parseInt(numS));
+                }else{
+                    showMessage("不存在该作业");
+                }
+            }
+
+            if("\"管理\"".equals(ans)){
+                homeActivity.getTab().setCurrentTab(3);
+            }
+        }catch (Exception e){
+            Log.e("return voice err",e.toString());
+            showMessage("服务器返回错误信息");
+        }
     }
 
 

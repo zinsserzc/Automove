@@ -114,5 +114,9 @@ public class HomeActivity extends AppCompatActivity {
         //Toast.makeText(this,ServerUtil.getIP(),Toast.LENGTH_LONG).show();
     }
 
+    public FragmentTabHost getTab(){
+        return mTabHost;
+    }
+
 
 }

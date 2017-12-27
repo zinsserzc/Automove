@@ -32,6 +32,8 @@ import java.util.List;
  */
 public class WorkFragment extends Fragment {
 
+
+
     private View rootView;
     private final int REFRESH_TIME=1000*60;
     private ListView jobListView;
@@ -83,7 +85,8 @@ public class WorkFragment extends Fragment {
                                            final int position, long id) {
                 // TODO Auto-generated method stub
                 // When clicked, show a toast with the TextView text
-                showDeleteJobDialog(view,position);
+                String jobID = ((TextView) view.findViewById(R.id.jobName)).getText().toString();
+                showDeleteJobDialog(position,jobID);
                 return false;
             }
         });
@@ -156,13 +159,23 @@ public class WorkFragment extends Fragment {
     }
 
 
+    public boolean jobExist(String jobName){
+        //boolean exist = false;
+        for(Job job : jobs){
+            if(job.getJobName().equals(jobName)){
+                return true;
+            }
+        }
+        return  false;
+    }
+
 
     /**
      * 删除作业对话框
      */
-    public void showDeleteJobDialog(View view,final int position){
+    public void showDeleteJobDialog(final int position,final String jobID){
         AlertDialog.Builder builder = new AlertDialog.Builder(WorkFragment.this.getActivity());
-        final String jobID = ((TextView) view.findViewById(R.id.jobName)).getText().toString();
+        //final String jobID = ((TextView) view.findViewById(R.id.jobName)).getText().toString();
         builder.setMessage("确认删除作业"+jobID+"?");
 
         builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
@@ -253,6 +266,7 @@ public class WorkFragment extends Fragment {
 //        ThreadManager.THREAD_POOL_EXECUTOR.execute(updateUITask);
 
     }
+
 
 
     final class JobAdapter extends BaseAdapter {
