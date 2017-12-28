@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.dawn.impetus.automove.R;
 import com.dawn.impetus.automove.entities.Job;
 import com.dawn.impetus.automove.threadpool.ThreadManager;
+import com.dawn.impetus.automove.utils.ContextApplication;
+import com.dawn.impetus.automove.utils.SPUtil;
 import com.dawn.impetus.automove.utils.ServerUtil;
 import com.dawn.impetus.automove.utils.VoiceUtil;
 
@@ -95,7 +97,7 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
                 // When clicked, show a toast with the TextView text
                 String jobID = ((TextView) view.findViewById(R.id.jobName)).getText().toString();
                 showDeleteJobDialog(position,jobID);
-                return false;
+                return true;
             }
         });
 
@@ -184,6 +186,22 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
     public void showDeleteJobDialog(final int position,final String jobID){
         AlertDialog.Builder builder = new AlertDialog.Builder(WorkFragment.this.getActivity());
         //final String jobID = ((TextView) view.findViewById(R.id.jobName)).getText().toString();
+
+        //判断是否是登录用户自身的作业
+        Context context = ContextApplication.getAppContext();
+        for(Job j:jobs){
+
+            if(j.getJobName().equals(jobID))
+            {
+                if(!j.getUser().equals(SPUtil.get(context, "userName", "").toString())){
+
+                    Toast.makeText(WorkFragment.this.getActivity(),"无删除他人作业权限",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+            }
+        }
+
         builder.setMessage("确认删除作业"+jobID+"?");
 
         builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
