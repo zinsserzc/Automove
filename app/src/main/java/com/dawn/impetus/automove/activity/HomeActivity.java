@@ -42,12 +42,6 @@ public class HomeActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        SSHUtil sshUtil = SSHUtil.getInstance();
-        try {
-            sshUtil.execCmd("df -h");
-        } catch (Exception e) {
-            Log.e("error ", e.getMessage());
-        }
         initView();
         init();
         //保持屏幕常亮

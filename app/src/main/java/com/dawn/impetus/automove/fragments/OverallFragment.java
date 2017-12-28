@@ -153,7 +153,7 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
     private boolean isNewRunnable = true;
 
     //是否第一次加载
-    private boolean isFirst = true;
+    //private boolean isFirst = true;
 
     private Handler overallHandler;
 
@@ -180,9 +180,9 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
 
     private void init() {
         iconSearch.setOnClickListener(this);
-        if(isFirst){
-            startUpdate();
-        }
+//        if(isFirst){
+//            startUpdate();
+//        }
 
         overallHandler = new Handler(){
             @Override
@@ -232,26 +232,26 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void startUpdate(){
-        //多线程刷新数据
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setText();
-                        //状态图标显示
-                        changeState();
-                        drawChart();
-                    }
-                });
+//    private void startUpdate(){
+//        //多线程刷新数据
+//        Runnable r = new Runnable() {
+//            @Override
+//            public void run() {
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        setText();
+//                        //状态图标显示
+//                        changeState();
+//                        drawChart();
+//                    }
+//                });
+//
+//            }
+//        };
+//        ThreadManager.THREAD_POOL_EXECUTOR.execute(r);
 
-            }
-        };
-        ThreadManager.THREAD_POOL_EXECUTOR.execute(r);
-
-    }
+//    }
 
 //    @Override
 //    public void onResume(){
