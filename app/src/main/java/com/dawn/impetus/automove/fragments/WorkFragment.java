@@ -34,21 +34,20 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WorkFragment extends Fragment  implements View.OnClickListener{
-
+public class WorkFragment extends Fragment implements View.OnClickListener {
 
 
     private View rootView;
-    private final int REFRESH_TIME=1000*60;
+    private final int REFRESH_TIME = 1000 * 60;
     private ListView jobListView;
     private JobAdapter jobAdapter;
-    static List<Job> jobs=new ArrayList<>();
+    static List<Job> jobs = new ArrayList<>();
     private Handler jobsRefreshHandler;
     private ImageView iconSearch;
 
     //Baidu语音
     private VoiceUtil voice;
-    private boolean isStart= false;
+    private boolean isStart = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,7 +68,7 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
                 public void handleMessage(Message msg) {
                     super.handleMessage(msg);
                     Toast.makeText(WorkFragment.this.getActivity(), "作业已更新", Toast.LENGTH_SHORT).show();
-                    if (jobs==null||jobs.size() == 0) {
+                    if (jobs == null || jobs.size() == 0) {
                         Toast.makeText(WorkFragment.this.getActivity(), "暂无作业", Toast.LENGTH_SHORT).show();
                     }
                     jobAdapter.notifyDataSetChanged();
@@ -96,17 +95,17 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
                 // TODO Auto-generated method stub
                 // When clicked, show a toast with the TextView text
                 String jobID = ((TextView) view.findViewById(R.id.jobName)).getText().toString();
-                showDeleteJobDialog(position,jobID);
+                showDeleteJobDialog(position, jobID);
                 return true;
             }
         });
 
         //设置单击弹出作业详情事件
-        jobListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        jobListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
-            final int position, long id) {
+                                    final int position, long id) {
                 int jobName = Integer.valueOf(jobs.get(position).getJobName());
                 showJobDetail(jobName);
             }
@@ -117,24 +116,25 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
 
     /**
      * 展示作业详情
+     *
      * @param jobName 作业id 用int防止识别错误
      */
-    public void showJobDetail(int jobName){
+    public void showJobDetail(int jobName) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(WorkFragment.this.getActivity());
-        builder.setTitle("作业"+jobName+"详情");
+        builder.setTitle("作业" + jobName + "详情");
 
         String content = "";
         content = ServerUtil.getJobDetail(String.valueOf(jobName));
 
-        if(content.equals("")) {
-            content="无法获取作业详情！";
+        if (content.equals("")) {
+            content = "无法获取作业详情！";
         }
 
         builder.setMessage(content);
 
 
-        builder.setPositiveButton("知道了",new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("知道了", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -146,63 +146,58 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
     }
 
 
-
-
-
-
     /**
      * 根据作业id返回list中的位置,未找到则返回-1
+     *
      * @return
      */
-    public final int getPositionByJobName(String JobName){
+    public final int getPositionByJobName(String JobName) {
 
-        int position=-1;
-        if(jobs!=null&&jobs.size()>0) {
+        int position = -1;
+        if (jobs != null && jobs.size() > 0) {
             for (Job j : jobs) {
-            if(j.getJobName().equals(JobName))
-            {
-                position=jobs.indexOf(j);
-            }
+                if (j.getJobName().equals(JobName)) {
+                    position = jobs.indexOf(j);
+                }
             }
         }
-        return position==-1?-1:position;
+        return position == -1 ? -1 : position;
     }
 
 
-    public boolean jobExist(String jobName){
+    public boolean jobExist(String jobName) {
         //boolean exist = false;
-        for(Job job : jobs){
-            if(job.getJobName().equals(jobName)){
+        for (Job job : jobs) {
+            if (job.getJobName().equals(jobName)) {
                 return true;
             }
         }
-        return  false;
+        return false;
     }
 
 
     /**
      * 删除作业对话框
      */
-    public void showDeleteJobDialog(final int position,final String jobID){
+    public void showDeleteJobDialog(final int position, final String jobID) {
         AlertDialog.Builder builder = new AlertDialog.Builder(WorkFragment.this.getActivity());
         //final String jobID = ((TextView) view.findViewById(R.id.jobName)).getText().toString();
 
         //判断是否是登录用户自身的作业
         Context context = ContextApplication.getAppContext();
-        for(Job j:jobs){
+        for (Job j : jobs) {
 
-            if(j.getJobName().equals(jobID))
-            {
-                if(!j.getUser().equals(SPUtil.get(context, "userName", "").toString())){
+            if (j.getJobName().equals(jobID)) {
+                if (!j.getUser().equals(SPUtil.get(context, "userName", "").toString())) {
 
-                    Toast.makeText(WorkFragment.this.getActivity(),"无删除他人作业权限",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WorkFragment.this.getActivity(), "无删除他人作业权限", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
             }
         }
 
-        builder.setMessage("确认删除作业"+jobID+"?");
+        builder.setMessage("确认删除作业" + jobID + "?");
 
         builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
 
@@ -210,15 +205,14 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
             public void onClick(DialogInterface dialog, int which) {
 
 
-                if(ServerUtil.deleteJob(jobID))
-                {
+                if (ServerUtil.deleteJob(jobID)) {
                     //删除并更新作业
                     jobs.remove(position);
                     jobsRefreshHandler.sendMessage(new Message());
                     Toast.makeText(WorkFragment.this.getActivity(), "删除job成功", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
 
-                    Toast.makeText(WorkFragment.this.getActivity(),"删除job失败",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WorkFragment.this.getActivity(), "删除job失败", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -236,6 +230,7 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         builder.create().show();
 
     }
+
     private void init() {
         iconSearch.setOnClickListener(this);
         //初始百度语音
@@ -245,7 +240,7 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
         jobAdapter = new JobAdapter();
         jobListView.setAdapter(jobAdapter);
 
-        if (jobs==null||jobs.size() == 0) {
+        if (jobs == null || jobs.size() == 0) {
             Toast.makeText(WorkFragment.this.getActivity(), "作业获取中", Toast.LENGTH_LONG).show();
         }
 
@@ -256,11 +251,12 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
 
                 while (true) {
 
-                    jobs = ServerUtil.getJobsInfo();
-                    Message msg = new Message();
-                    jobsRefreshHandler.sendMessage(msg);
                     try {
-                        Thread.sleep(REFRESH_TIME);
+                        jobs = ServerUtil.getJobsInfo();
+                        if(jobs!=null) {
+                            jobsRefreshHandler.sendMessage(new Message());
+                        }
+                        Thread.currentThread().sleep(REFRESH_TIME);
                     } catch (Exception e) {
 
                     }
@@ -294,7 +290,6 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
 //        ThreadManager.THREAD_POOL_EXECUTOR.execute(updateUITask);
 
     }
-
 
 
     final class JobAdapter extends BaseAdapter {
@@ -364,15 +359,15 @@ public class WorkFragment extends Fragment  implements View.OnClickListener{
 
     }
 
-    public void onClick(View v){
+    public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.icon_search:
                 isStart = !isStart;
-                if(isStart){
+                if (isStart) {
                     iconSearch.setImageResource(R.drawable.icon_after_click);
                     voice.start();
-                }else {
+                } else {
                     iconSearch.setImageResource(R.drawable.icon_before_click);
                     voice.stop();
                 }

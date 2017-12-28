@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,11 +24,11 @@ import com.dawn.impetus.automove.utils.ServerUtil;
 public class LoginActivity extends AppCompatActivity {
 
 
-    public  static final String TAG = LoginActivity.class.getName();
+    public static final String TAG = LoginActivity.class.getName();
 
-    private EditText addressEdit,portEdit,userEdit, pswEdit;
+    private EditText addressEdit, portEdit, userEdit, pswEdit;
     private Button loginBtn;
-    private String address,port,userName, passWord;
+    private String address, port, userName, passWord;
     private Handler loginHandler;
 
     @Override
@@ -41,7 +42,8 @@ public class LoginActivity extends AppCompatActivity {
         init();
         setListener();
 
-
+        //保持屏幕常亮
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     /**
@@ -50,8 +52,8 @@ public class LoginActivity extends AppCompatActivity {
     private void init() {
 
         loginBtn = (Button) findViewById(R.id.login_btnLogin);
-        addressEdit=(EditText)findViewById(R.id.login_address);
-        portEdit=(EditText)findViewById(R.id.login_port);
+        addressEdit = (EditText) findViewById(R.id.login_address);
+        portEdit = (EditText) findViewById(R.id.login_port);
         userEdit = (EditText) findViewById(R.id.login_edtId);
         pswEdit = (EditText) findViewById(R.id.login_edtPwd);
     }
@@ -106,8 +108,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
-
 
 
         //用户名框
@@ -190,13 +190,13 @@ public class LoginActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 1:
-                        Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
                         break;
                     case 0:
-                        Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
                         loginBtn.setEnabled(true);
                         loginBtn.setText("登录");
                         addressEdit.setEnabled(true);
@@ -215,10 +215,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Message msg = new Message();
-                if(ServerUtil.connect())
-                {
+                if (ServerUtil.connect()) {
                     msg.what = 1;
-                }else {
+                } else {
                     msg.what = 0;
                 }
                 loginHandler.sendMessage(msg);
@@ -240,13 +239,11 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, "请输入地址", Toast.LENGTH_SHORT).show();
             return false;
 
-        }else
-        if (port == null || port.equals("")) {
+        } else if (port == null || port.equals("")) {
             Toast.makeText(LoginActivity.this, "请输入端口号", Toast.LENGTH_SHORT).show();
             return false;
 
-        }else
-        if (userName == null || userName.equals("")) {
+        } else if (userName == null || userName.equals("")) {
             Toast.makeText(LoginActivity.this, "请输入账号", Toast.LENGTH_SHORT).show();
             return false;
 
@@ -264,8 +261,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void saveUser() {
 
-        address=addressEdit.getText().toString();
-        port=portEdit.getText().toString();
+        address = addressEdit.getText().toString();
+        port = portEdit.getText().toString();
         userName = userEdit.getText().toString();
         passWord = pswEdit.getText().toString();
         SPUtil.put(getApplicationContext(), "address", address);

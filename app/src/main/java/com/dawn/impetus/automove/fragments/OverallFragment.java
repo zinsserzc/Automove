@@ -212,7 +212,7 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
 //                        });
                         Thread.currentThread().sleep(REFRESHTIME);
                     }catch (Exception e){
-                        Toast.makeText(getActivity(),"网络连接中断！",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(),"网络连接中断！",Toast.LENGTH_SHORT).show();
                     }
                 }
                 //可以新建线程
