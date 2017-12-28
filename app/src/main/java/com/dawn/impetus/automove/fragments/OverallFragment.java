@@ -62,7 +62,7 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
 
     //Baidu语音
     private VoiceUtil voice;
-    private boolean isStart;
+    private boolean isStart = false;
 
     //图表
     private PieChart chartCPU;
@@ -603,8 +603,10 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
             case R.id.icon_search:
                 isStart = !isStart;
                 if(isStart){
+                    iconSearch.setImageResource(R.drawable.icon_after_click);
                     voice.start();
                 }else {
+                    iconSearch.setImageResource(R.drawable.icon_before_click);
                     voice.stop();
                 }
                 break;

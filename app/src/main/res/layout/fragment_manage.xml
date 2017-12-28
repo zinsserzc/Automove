@@ -6,13 +6,20 @@
     tools:context="com.dawn.impetus.automove.fragments.ManageFragment"
     android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <com.dawn.impetus.automove.ui.TitleView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:myTitle = "@string/manager"
-        app:backIconIsVisible = "false">
-    </com.dawn.impetus.automove.ui.TitleView>
+        android:layout_height="50dip"
+        android:background="@color/blue"
+        android:paddingRight="10dip">
+        <ImageView
+            android:id="@+id/icon_search"
+            android:layout_width="25dip"
+            android:layout_height="25dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_before_click"
+            />
+    </RelativeLayout>
 
     <LinearLayout
         android:orientation="horizontal"

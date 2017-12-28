@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dawn.impetus.automove.R;
 import com.dawn.impetus.automove.threadpool.ThreadManager;
 import com.dawn.impetus.automove.utils.ServerUtil;
+import com.dawn.impetus.automove.utils.VoiceUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ManageFragment extends Fragment {
+public class ManageFragment extends Fragment implements View.OnClickListener{
 
     //用户列表
     private List<String> userList = null;
@@ -35,8 +37,11 @@ public class ManageFragment extends Fragment {
     private TextView userCountTv;
     private View rootView;
     private Handler handler;
+    private ImageView iconSearch;
 
-
+    //Baidu语音
+    private VoiceUtil voice;
+    private boolean isStart= false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,9 +66,13 @@ public class ManageFragment extends Fragment {
     private void initView(View view) {
         userLv = (ListView) view.findViewById(R.id.lv_manage);
         userCountTv = (TextView) view.findViewById(R.id.tv_user_count);
+        iconSearch = (ImageView) view.findViewById(R.id.icon_search);
     }
 
     private void init() {
+        iconSearch.setOnClickListener(this);
+        //初始百度语音
+        voice = new VoiceUtil(this.getActivity());
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg){
@@ -132,6 +141,25 @@ public class ManageFragment extends Fragment {
 
     public final class ManageViewHolder {
         public TextView usernameTv;
+
+    }
+
+    public void onClick(View v){
+
+        switch (v.getId()){
+            case R.id.icon_search:
+                isStart = !isStart;
+                if(isStart){
+                    iconSearch.setImageResource(R.drawable.icon_after_click);
+                    voice.start();
+                }else {
+                    iconSearch.setImageResource(R.drawable.icon_before_click);
+                    voice.stop();
+                }
+                break;
+            default:
+                break;
+        }
 
     }
 

@@ -2,16 +2,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.MonitorFragment"
     android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <com.dawn.impetus.automove.ui.TitleView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:myTitle="监控"
-        app:backIconIsVisible = "false"></com.dawn.impetus.automove.ui.TitleView>
+        android:layout_height="50dip"
+        android:background="@color/blue"
+        android:paddingRight="10dip">
+        <ImageView
+            android:id="@+id/icon_search"
+            android:layout_width="25dip"
+            android:layout_height="25dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_before_click"
+            />
+    </RelativeLayout>
 
 
     <LinearLayout

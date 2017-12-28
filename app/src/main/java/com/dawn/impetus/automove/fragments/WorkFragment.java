@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.dawn.impetus.automove.R;
 import com.dawn.impetus.automove.entities.Job;
 import com.dawn.impetus.automove.threadpool.ThreadManager;
 import com.dawn.impetus.automove.utils.ServerUtil;
+import com.dawn.impetus.automove.utils.VoiceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WorkFragment extends Fragment {
+public class WorkFragment extends Fragment  implements View.OnClickListener{
 
 
 
@@ -40,6 +42,11 @@ public class WorkFragment extends Fragment {
     private JobAdapter jobAdapter;
     static List<Job> jobs=new ArrayList<>();
     private Handler jobsRefreshHandler;
+    private ImageView iconSearch;
+
+    //Baidu语音
+    private VoiceUtil voice;
+    private boolean isStart= false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +56,7 @@ public class WorkFragment extends Fragment {
         if (rootView == null) {
             rootView = View.inflate(WorkFragment.this.getActivity(), R.layout.fragment_work, null);
             jobListView = (ListView) rootView.findViewById(R.id.jobListView);
+            iconSearch = (ImageView) rootView.findViewById(R.id.icon_search);
 
             init();
             setListItemDeleMethod();
@@ -211,7 +219,9 @@ public class WorkFragment extends Fragment {
 
     }
     private void init() {
-
+        iconSearch.setOnClickListener(this);
+        //初始百度语音
+        voice = new VoiceUtil(this.getActivity());
         //初始化listview
         jobs = new ArrayList<>();
         jobAdapter = new JobAdapter();
@@ -333,6 +343,25 @@ public class WorkFragment extends Fragment {
         public TextView excluCoreNum;
         public TextView time;
         public TextView state;
+
+    }
+
+    public void onClick(View v){
+
+        switch (v.getId()){
+            case R.id.icon_search:
+                isStart = !isStart;
+                if(isStart){
+                    iconSearch.setImageResource(R.drawable.icon_after_click);
+                    voice.start();
+                }else {
+                    iconSearch.setImageResource(R.drawable.icon_before_click);
+                    voice.stop();
+                }
+                break;
+            default:
+                break;
+        }
 
     }
 

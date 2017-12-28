@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">管理</string>
+    <string name="app_name">智能运维</string>
     <string name="bt1">关机</string>
     <string name="bt2">重启</string>
     <string name="manager">管理</string>

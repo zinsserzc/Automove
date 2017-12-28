@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import com.dawn.impetus.automove.R;
 import com.dawn.impetus.automove.entities.Node;
 import com.dawn.impetus.automove.threadpool.ThreadManager;
 import com.dawn.impetus.automove.utils.ServerUtil;
+import com.dawn.impetus.automove.utils.VoiceUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +27,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MonitorFragment extends Fragment {
+public class MonitorFragment extends Fragment  implements View.OnClickListener{
 
     private static final int REFRESHTIME = 50 * 1000;
 
@@ -40,6 +42,11 @@ public class MonitorFragment extends Fragment {
 
     private View rootView;
     private Handler monitorHandler;
+    private ImageView iconSearch;
+
+    //Baidu语音
+    private VoiceUtil voice;
+    private boolean isStart= false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +73,8 @@ public class MonitorFragment extends Fragment {
         nodeBusyTv = (TextView) view.findViewById(R.id.tv_node_busy);
         nodeDownTv = (TextView) view.findViewById(R.id.tv_node_down);
         monitorLv = (ListView) view.findViewById(R.id.lv_monitor);
+        iconSearch = (ImageView) view.findViewById(R.id.icon_search);
+
     }
     private void setText(Map<String, String> map){
         nodeFreeTv.setText(map.get("free"));
@@ -75,7 +84,9 @@ public class MonitorFragment extends Fragment {
     }
 
     private void init() {
-
+        iconSearch.setOnClickListener(this);
+        //初始百度语音
+        voice = new VoiceUtil(this.getActivity());
         monitorHandler = new Handler(){
           @Override
           public void handleMessage(Message msg){
@@ -184,6 +195,25 @@ public class MonitorFragment extends Fragment {
         public TextView nodeNameTv;
         public TextView coreUsedTv;
         public TextView coreFreeTv;
+
+    }
+
+    public void onClick(View v){
+
+        switch (v.getId()){
+            case R.id.icon_search:
+                isStart = !isStart;
+                if(isStart){
+                    iconSearch.setImageResource(R.drawable.icon_after_click);
+                    voice.start();
+                }else {
+                    iconSearch.setImageResource(R.drawable.icon_before_click);
+                    voice.stop();
+                }
+                break;
+            default:
+                break;
+        }
 
     }
 
