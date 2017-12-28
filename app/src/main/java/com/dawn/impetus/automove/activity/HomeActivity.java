@@ -118,5 +118,10 @@ public class HomeActivity extends AppCompatActivity {
         return mTabHost;
     }
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        ServerUtil.disconnect();
+    }
 
 }
