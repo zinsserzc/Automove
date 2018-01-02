@@ -77,7 +77,6 @@ public class ManageFragment extends Fragment implements View.OnClickListener{
             @Override
             public void handleMessage(Message msg){
                 super.handleMessage(msg);
-                userList = ServerUtil.getUserList();
                 userCountTv.setText(String.valueOf(userList.size()));
                 userLv.setAdapter(mAdapter);
                 if(mAdapter == null) {
@@ -92,6 +91,7 @@ public class ManageFragment extends Fragment implements View.OnClickListener{
         Runnable updateUITask = new Runnable() {
             @Override
             public void run() {
+                userList = ServerUtil.getUserList();
                 handler.sendMessage(new Message());
             }
         };

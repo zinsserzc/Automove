@@ -196,6 +196,9 @@ public class ServerUtil {
             exclusive = ssh.execCmd("pbsnodes|grep -c exclusive$").trim();
             busy = ssh.execCmd("pbsnodes|grep -c busy$").trim();
             down = ssh.execCmd("pbsnodes|grep -c down$").trim();
+            Log.e("busy",busy);
+            Log.e("down",down);
+            Log.e("exclusive",exclusive);
         } catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage());
         } finally {
@@ -203,6 +206,7 @@ public class ServerUtil {
             res.put("exclusive", exclusive);
             res.put("busy", busy);
             res.put("down", down);
+            Log.e("hashmap",String.valueOf(res.size()));
 
             return res;
         }

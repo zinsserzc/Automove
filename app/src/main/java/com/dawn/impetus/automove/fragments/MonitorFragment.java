@@ -50,6 +50,8 @@ public class MonitorFragment extends Fragment  implements View.OnClickListener{
     private VoiceUtil voice;
     private boolean isStart= false;
 
+
+    private Map<String, String> map;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -103,8 +105,6 @@ public class MonitorFragment extends Fragment  implements View.OnClickListener{
           @Override
           public void handleMessage(Message msg){
               super.handleMessage(msg);
-              nodeList = ServerUtil.getNodeInfos();
-              Map<String, String> map = ServerUtil.getNodeStateNum();
               setText(map);
               if(mAdapter == null){
                   mAdapter = new MonitorListAdapter();
@@ -119,6 +119,8 @@ public class MonitorFragment extends Fragment  implements View.OnClickListener{
             @Override
             public void run() {
                 while(true) {
+                    nodeList = ServerUtil.getNodeInfos();
+                    map = ServerUtil.getNodeStateNum();
                     monitorHandler.sendMessage(new Message());
                     try {
                         Thread.currentThread().sleep(REFRESHTIME);
