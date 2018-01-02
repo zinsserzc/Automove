@@ -21,6 +21,7 @@ import com.dawn.impetus.automove.threadpool.ThreadManager;
 import com.dawn.impetus.automove.utils.ServerUtil;
 import com.dawn.impetus.automove.utils.VoiceUtil;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,8 @@ public class MonitorFragment extends Fragment  implements View.OnClickListener{
     private List<Node> nodeList;
     private ListView monitorLv;
     private MonitorListAdapter mAdapter;
-
+    //标题栏提示更新时间textview
+    private TextView topNotifyTv;
     private View rootView;
     private Handler monitorHandler;
     private ImageView iconSearch;
@@ -74,13 +76,23 @@ public class MonitorFragment extends Fragment  implements View.OnClickListener{
         nodeDownTv = (TextView) view.findViewById(R.id.tv_node_down);
         monitorLv = (ListView) view.findViewById(R.id.lv_monitor);
         iconSearch = (ImageView) view.findViewById(R.id.icon_search);
+        topNotifyTv=(TextView)view.findViewById(R.id.topNotifyTv);
 
+    }
+    /**
+     * 改变标题更新时间
+     */
+    private void changeNotifyTv(){
+
+        Calendar c = Calendar.getInstance();
+        String info ="更新于"+c.get(Calendar.HOUR_OF_DAY)+"时"+c.get(Calendar.MINUTE)+"分"+c.get(Calendar.SECOND)+"秒";
+        topNotifyTv.setText(info);
     }
     private void setText(Map<String, String> map){
         nodeFreeTv.setText(map.get("free"));
-        nodeBusyTv.setText(map.get("busy").trim());
-        nodeExclusiveTv.setText(map.get("exclusive").trim());
-        nodeDownTv.setText(map.get("down").trim());
+        nodeBusyTv.setText(map.get("busy"));
+        nodeExclusiveTv.setText(map.get("exclusive"));
+        nodeDownTv.setText(map.get("down"));
     }
 
     private void init() {
@@ -100,7 +112,7 @@ public class MonitorFragment extends Fragment  implements View.OnClickListener{
               }else {
                   mAdapter.notifyDataSetChanged();
               }
-              Toast.makeText(MonitorFragment.this.getActivity(),"监控已更新",Toast.LENGTH_SHORT).show();
+              changeNotifyTv();
           }
         };
         Runnable updateUITask = new Runnable() {
@@ -164,7 +176,7 @@ public class MonitorFragment extends Fragment  implements View.OnClickListener{
                 holder.nodeNameTv.setText(node.getName());
                 holder.coreFreeTv.setText(String.valueOf(node.getUnUsedCoreNum()));
                 holder.coreUsedTv.setText(String.valueOf(node.getUsedCoreNum()));
-                if(node.getState().trim().equals("busy")){
+                if(node.getState().equals("busy")){
                     holder.nodeNameTv.setTextColor(getResources().getColor(R.color.red));
                 }else if(node.getState().equals("free")){
                     holder.nodeNameTv.setTextColor(getResources().getColor(R.color.green));

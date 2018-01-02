@@ -194,7 +194,7 @@ public class ServerUtil {
 
             free = ssh.execCmd("pbsnodes|grep -c free$").trim();
             exclusive = ssh.execCmd("pbsnodes|grep -c exclusive$").trim();
-            busy = ssh.execCmd("pbsnodes|grep -c busy$");
+            busy = ssh.execCmd("pbsnodes|grep -c busy$").trim();
             down = ssh.execCmd("pbsnodes|grep -c down$").trim();
         } catch (Exception e) {
             Log.e(TAG, e.getLocalizedMessage());
@@ -219,7 +219,7 @@ public class ServerUtil {
     public static String getCPUName() {
         String res = null;
         try {
-            res = ssh.execCmd("cat /proc/cpuinfo|grep name|uniq|awk -F':' '{print $2}'|awk '{print $1\" \"$2}'").trim();
+            res = ssh.execCmd(" cat /proc/cpuinfo | grep \"model name\" | cut -d \":\" -f 2 | head -n 1").trim();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {

@@ -29,6 +29,7 @@ import com.dawn.impetus.automove.utils.ServerUtil;
 import com.dawn.impetus.automove.utils.VoiceUtil;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -44,7 +45,8 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
     static List<Job> jobs = new ArrayList<>();
     private Handler jobsRefreshHandler;
     private ImageView iconSearch;
-
+    //标题栏提示更新时间textview
+    private TextView topNotifyTv;
     //Baidu语音
     private VoiceUtil voice;
     private boolean isStart = false;
@@ -58,7 +60,7 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
             rootView = View.inflate(WorkFragment.this.getActivity(), R.layout.fragment_work, null);
             jobListView = (ListView) rootView.findViewById(R.id.jobListView);
             iconSearch = (ImageView) rootView.findViewById(R.id.icon_search);
-
+            topNotifyTv=(TextView)rootView.findViewById(R.id.topNotifyTv);
             init();
             setListItemDeleMethod();
             //设置list更新处理handler
@@ -67,11 +69,11 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void handleMessage(Message msg) {
                     super.handleMessage(msg);
-                    Toast.makeText(WorkFragment.this.getActivity(), "作业已更新", Toast.LENGTH_SHORT).show();
                     if (jobs == null || jobs.size() == 0) {
                         Toast.makeText(WorkFragment.this.getActivity(), "暂无作业", Toast.LENGTH_SHORT).show();
                     }
                     jobAdapter.notifyDataSetChanged();
+                    changeNotifyTv();
                 }
 
             };
@@ -112,6 +114,16 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
 
         });
 
+    }
+
+    /**
+     * 改变标题更新时间
+     */
+    private void changeNotifyTv(){
+
+        Calendar c = Calendar.getInstance();
+        String info ="更新于"+c.get(Calendar.HOUR_OF_DAY)+"时"+c.get(Calendar.MINUTE)+"分"+c.get(Calendar.SECOND)+"秒";
+        topNotifyTv.setText(info);
     }
 
     /**
@@ -239,11 +251,6 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
         jobs = new ArrayList<>();
         jobAdapter = new JobAdapter();
         jobListView.setAdapter(jobAdapter);
-
-        if (jobs == null || jobs.size() == 0) {
-            Toast.makeText(WorkFragment.this.getActivity(), "作业获取中", Toast.LENGTH_LONG).show();
-        }
-
 
         Runnable updateList = new Runnable() {
             @Override

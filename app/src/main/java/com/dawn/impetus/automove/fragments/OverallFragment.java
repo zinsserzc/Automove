@@ -37,7 +37,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TimerTask;
@@ -57,6 +60,8 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
 
     private ImageView iconSearch;
 
+    //标题栏提示更新时间textview
+    private TextView topNotifyTv;
     //数据封装对象
     private OverallData datas = OverallData.getInstance();
 
@@ -178,6 +183,14 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
 
     }
 
+
+    private void changeNotifyTv(){
+
+        Calendar c = Calendar.getInstance();
+        String info ="更新于"+c.get(Calendar.HOUR_OF_DAY)+"时"+c.get(Calendar.MINUTE)+"分"+c.get(Calendar.SECOND)+"秒";
+        topNotifyTv.setText(info);
+    }
+
     private void init() {
         iconSearch.setOnClickListener(this);
 //        if(isFirst){
@@ -188,6 +201,7 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
             @Override
             public void handleMessage(Message msg){
                 super.handleMessage(msg);
+                changeNotifyTv();
                 setData();
                 changeState();
                 drawChart();
@@ -536,7 +550,7 @@ public class OverallFragment extends Fragment implements View.OnClickListener{
     private void initView(View view) {
         chartCPU =  (PieChart) view.findViewById(R.id.piechart_cpu);
         charRAM = (PieChart) view.findViewById(R.id.piechart_ram);
-
+        topNotifyTv=(TextView)view.findViewById(R.id.topNotifyTv);
         iconSearch = (ImageView) view.findViewById(R.id.icon_search);
 
         //界面数据textview

@@ -10,6 +10,16 @@
         android:layout_height="50dip"
         android:background="@color/blue"
         android:paddingRight="10dip">
+        <TextView
+            android:id="@+id/topNotifyTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:text="正在加载数据..."/>
         <ImageView
             android:id="@+id/icon_search"
             android:layout_width="25dip"
